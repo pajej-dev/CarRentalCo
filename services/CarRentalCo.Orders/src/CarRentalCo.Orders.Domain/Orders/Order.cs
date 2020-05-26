@@ -10,7 +10,8 @@ namespace CarRentalCo.Orders.Domain.Orders
     public class Order : AggregateRoot, IEntity<OrderId>
     {
         public OrderId Id { get; private set; }
-        public int MyProperty { get; set; }
+        public CustomerId CustomerId { get; private set; }
+        public IList<OrderCar> OrderCars => orderCars;
         public double TotalPrice => totalPrice;
 
         private IList<OrderCar> orderCars;
