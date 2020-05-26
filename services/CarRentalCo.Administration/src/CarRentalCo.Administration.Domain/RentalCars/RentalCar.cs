@@ -1,4 +1,5 @@
-﻿using CarRentalCo.Common.Domain;
+﻿using CarRentalCo.Administration.Domain.RentalCars.Events;
+using CarRentalCo.Common.Domain;
 
 namespace CarRentalCo.Administration.Domain.RentalCars
 {
@@ -27,6 +28,8 @@ namespace CarRentalCo.Administration.Domain.RentalCars
             this.description = description;
             this.pricePerDay = pricePerDay;
             this.imageUrl = imageUrl;
+
+            AddDomainEvent(new RentalCarCreatedDomainEvent(Id));
         }
 
         public static RentalCar Create(RentalCarId id, RentalCarSpecification specification, RentalCarOperatingInfo operatingInfo, string vinNumber,

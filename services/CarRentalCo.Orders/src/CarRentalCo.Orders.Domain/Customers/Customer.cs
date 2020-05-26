@@ -1,4 +1,6 @@
 ﻿using CarRentalCo.Common.Domain;
+using CarRentalCo.Common.Other;
+using CarRentalCo.Orders.Domain.Customers.Events;
 using System;
 
 namespace CarRentalCo.Orders.Domain.Customers
@@ -23,12 +25,12 @@ namespace CarRentalCo.Orders.Domain.Customers
             this.DateOfBirth = dateOfBirth;
             this.CreationDate = creationDate;
 
-            //todo domain event
+            AddDomainEvent(new CustomerCreatedDomainEvent(Id));
         }
 
-        public static Customer Create(Guid id, string fullName, string email, DateTime dateOfBirth, IDateTimeProvider dateTimeProvider)
+        public static Customer Create(Guid id, string fullName, string email, DateTime dateOfBirth)
         {
-            return new Customer(id, fullName, email, dateOfBirth, dateTimeProvider.UtcNow);
+            return new Customer(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
         }
     }
 }

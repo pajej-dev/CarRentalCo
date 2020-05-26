@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CarRentalCo.Administration\src\CarRentalCo.Administration.Domain\CarRentalCo.Administration.Domain.csproj" />
     <ProjectReference Include="..\..\..\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj" />
   </ItemGroup>
 

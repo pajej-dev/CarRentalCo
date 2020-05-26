@@ -1,6 +1,9 @@
-﻿namespace CarRentalCo.Common.Domain
+﻿using System;
+
+namespace CarRentalCo.Common.Domain
 {
     public  interface IDomainEvent
     {
+        DateTime EventUtcDate { get; }
     }
 }

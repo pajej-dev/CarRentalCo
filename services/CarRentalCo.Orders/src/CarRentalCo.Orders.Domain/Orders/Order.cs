@@ -1,5 +1,5 @@
-﻿using CarRentalCo.Administration.Domain.RentalCars;
-using CarRentalCo.Common.Domain;
+﻿using CarRentalCo.Common.Domain;
+using CarRentalCo.Orders.Domain.Orders.Events;
 using CarRentalCo.Orders.Domain.Orders.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace CarRentalCo.Orders.Domain.Orders
         {
         }
 
-        private Order(OrderId id, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
+        private Order(OrderId id, CustomerId customerId, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
         {
             Id = id;
             this.orderCars = orderCars ?? new List<OrderCar>();
@@ -32,6 +32,8 @@ namespace CarRentalCo.Orders.Domain.Orders
             this.orderStatus = orderStatus;
             this.CalculateTotalDays();
             this.CalculateTotalPrice();
+
+            AddDomainEvent(new OrderCreatedDomainEvent(Id, customerId));
         }
 
         private void CalculateTotalPrice()
@@ -59,7 +61,7 @@ namespace CarRentalCo.Orders.Domain.Orders
         }
 
 
-        public static Order Create(OrderId id, DateTime createdAt, IList<OrderCar> orderCars = null)
+        public static Order Create(OrderId id, CustomerId customerId, DateTime createdAt, IList<OrderCar> orderCars = null)
         {
             var groupedOrderCars = orderCars.GroupBy(x => x.RentalCarId);
             if (groupedOrderCars?.Any(x => x.Count() > 1) ?? false)
@@ -67,7 +69,7 @@ namespace CarRentalCo.Orders.Domain.Orders
                 throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
             }
 
-            return new Order(id, createdAt, OrderStatus.New, orderCars);
+            return new Order(id, customerId, createdAt, OrderStatus.New, orderCars);
         }
 
         public void AddOrderCar(RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
@@ -84,6 +86,7 @@ namespace CarRentalCo.Orders.Domain.Orders
             }
 
             orderCars.Add(OrderCar.Create(rentalCarId, pricePerDay, rentalStartDate, rentalEndDate));
+            AddDomainEvent(new OrderCarAddedDomainEvent(Id, rentalCarId, CustomerId));
 
             this.CalculateTotalDays();
             this.CalculateTotalPrice();
@@ -98,6 +101,7 @@ namespace CarRentalCo.Orders.Domain.Orders
 
             var orderToRemove = orderCars.First(x => x.RentalCarId == rentalCarId);
             orderCars.Remove(orderToRemove);
+            AddDomainEvent(new OrderCarRemovedDomainEvent(Id, rentalCarId, CustomerId));
 
             this.CalculateTotalDays();
             this.CalculateTotalPrice();
@@ -109,6 +113,9 @@ namespace CarRentalCo.Orders.Domain.Orders
             {
                 throw new CannotChangeOrderStatusException(Id, orderStatus, OrderStatus.Canceled);
             }
+
+            orderStatus = OrderStatus.Canceled;
+            AddDomainEvent(new OrderCanceledDomainEvent(Id, CustomerId));
         }
 
         public void FinishOrder()
@@ -117,6 +124,9 @@ namespace CarRentalCo.Orders.Domain.Orders
             {
                 throw new CannotChangeOrderStatusException(Id, orderStatus, OrderStatus.Finished);
             }
+
+            orderStatus = OrderStatus.Finished;
+            AddDomainEvent(new OrderFinishedDomainEvent(Id, CustomerId));
         }
     }
 }

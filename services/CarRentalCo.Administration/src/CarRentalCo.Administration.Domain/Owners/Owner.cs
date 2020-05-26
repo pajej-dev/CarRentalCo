@@ -1,4 +1,6 @@
-﻿using CarRentalCo.Common.Domain;
+﻿using CarRentalCo.Administration.Domain.Owners.Events;
+using CarRentalCo.Common.Domain;
+using CarRentalCo.Common.Other;
 using System;
 
 namespace CarRentalCo.Administration.Domain.Owners
@@ -23,12 +25,12 @@ namespace CarRentalCo.Administration.Domain.Owners
             this.DateOfBirth = dateOfBirth;
             this.CreationDate = creationDate;
 
-            //todo domain event
+            AddDomainEvent(new OwnerCreatedDomainEvent(Id));
         }
 
-        public static Owner Create(Guid id, string fullName, string email, DateTime dateOfBirth, IDateTimeProvider dateTimeProvider)
+        public static Owner Create(Guid id, string fullName, string email, DateTime dateOfBirth)
         {
-            return new Owner(id, fullName, email, dateOfBirth, dateTimeProvider.UtcNow);
+            return new Owner(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
         }
     }
 }

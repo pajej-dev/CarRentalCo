@@ -1,4 +1,5 @@
 ﻿using CarRentalCo.Common.Domain;
+using CarRentalCo.Users.Domain.Users.Events;
 using CarRentalCo.Users.Domain.Users.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace CarRentalCo.Users.Domain.Users
             this.modificationDate = modificationDate;
             this.roles = roles;
             this.usersUniqueChecker = usersUniqueChecker;
+
+            AddDomainEvent(new UserCreatedDomainEvent(Id, roles));
         }
 
         public static User Create(string fullName, string password, string email, DateTime dateOfBirth,

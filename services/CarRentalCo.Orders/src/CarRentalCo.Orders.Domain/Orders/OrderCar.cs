@@ -1,5 +1,4 @@
-﻿using CarRentalCo.Administration.Domain.RentalCars;
-using CarRentalCo.Common.Domain;
+﻿using CarRentalCo.Common.Domain;
 using CarRentalCo.Orders.Domain.Orders.Exceptions;
 using System;
 
