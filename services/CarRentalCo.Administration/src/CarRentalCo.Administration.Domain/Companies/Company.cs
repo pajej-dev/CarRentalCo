@@ -85,7 +85,7 @@ namespace CarRentalCo.Administration.Domain.Companies
         {
             var agency = agencies.FirstOrDefault(x => x.Id == agencyId);
 
-            if(agency == null)
+            if (agency == null)
                 throw new AgencyNotFoundException($"Unable to add rental car. AgencyId: {agencyId} does not exists" +
                     $"in a company with Id: {Id}");
 
