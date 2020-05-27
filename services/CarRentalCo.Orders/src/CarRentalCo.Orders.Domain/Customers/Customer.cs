@@ -11,9 +11,9 @@ namespace CarRentalCo.Orders.Domain.Customers
 
         private string fullName;
         private string email;
-        private DateTime DateOfBirth;
-        private DateTime CreationDate;
-        private DateTime ModificationDate;
+        private DateTime dateOfBirth;
+        private DateTime creationDate;
+        private DateTime modificationDate;
 
         private Customer() { }
 
@@ -22,8 +22,8 @@ namespace CarRentalCo.Orders.Domain.Customers
             this.Id = new CustomerId(id);
             this.fullName = fullName;
             this.email = email;
-            this.DateOfBirth = dateOfBirth;
-            this.CreationDate = creationDate;
+            this.dateOfBirth = dateOfBirth;
+            this.creationDate = creationDate;
 
             AddDomainEvent(new CustomerCreatedDomainEvent(Id));
         }
