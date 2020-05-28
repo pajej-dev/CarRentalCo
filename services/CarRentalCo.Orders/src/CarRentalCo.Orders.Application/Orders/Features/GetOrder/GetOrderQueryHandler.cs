@@ -23,16 +23,16 @@ namespace CarRentalCo.Orders.Application.Orders.Features.GetOrder
             return order == null ? default : 
                 new OrderDto
                 {
-                    Id = order.Id.Id,
-                    CustomerId = order.CustomerId.Id,
+                    Id = order.Id.Value,
+                    CustomerId = order.CustomerId.Value,
                     TotalPrice = order.TotalPrice,
                     CreatedAt = order.CreatedAt,
                     OrderStatus = Map(order.OrderStatus),
                     OrderCars = order.OrderCars.Select(x => new OrderCarDto
                     {
-                        Id = x.Id.Id,
+                        Id = x.Id.Value,
                         PricePerDay = x.PricePerDay,
-                        RentalCarId = x.RentalCarId.Id,
+                        RentalCarId = x.RentalCarId.Value,
                         RentalEndDate = x.RentalEndDate,
                         RentalStartDate = x.RentalStartDate
                     }).ToList()

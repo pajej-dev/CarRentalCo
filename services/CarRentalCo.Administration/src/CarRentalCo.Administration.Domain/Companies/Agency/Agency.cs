@@ -57,7 +57,7 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         public void AddRentalCar(RentalCarId rentalCarId)
         {
-            if (RentalCars.Any(x => x.Id == rentalCarId.Id))
+            if (RentalCars.Any(x => x.Value == rentalCarId.Value))
                 throw new RentalCarAlreadyAddedException($"Cannot add rentalCarId: {rentalCarId} because It already exists in agency");
 
             if (RentalCars.Count > 30)

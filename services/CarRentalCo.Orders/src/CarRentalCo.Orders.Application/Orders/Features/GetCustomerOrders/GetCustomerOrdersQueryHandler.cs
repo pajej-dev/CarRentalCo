@@ -22,14 +22,14 @@ namespace CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders
 
             var dtos = result.Select(order => new OrderDto 
             {
-                Id = order.Id.Id,
-                CustomerId = order.CustomerId.Id,
+                Id = order.Id.Value,
+                CustomerId = order.CustomerId.Value,
                 TotalPrice = order.TotalPrice,
                 OrderCars = order.OrderCars.Select(x => new OrderCarDto
                 {
-                    Id = x.Id.Id,
+                    Id = x.Id.Value,
                     PricePerDay = x.PricePerDay,
-                    RentalCarId = x.RentalCarId.Id,
+                    RentalCarId = x.RentalCarId.Value,
                     RentalEndDate = x.RentalEndDate,
                     RentalStartDate = x.RentalStartDate
                 }).ToList()

@@ -18,7 +18,7 @@ namespace CarRentalCo.Orders.Application.Customers.Features.GetCustomer
         {
             var customer = await customerRepository.GetByIdAsync(new CustomerId(query.CustomerId));
 
-            return new CustomerDto { Id = customer.Id.Id };
+            return customer == null ? default : new CustomerDto { Id = customer.Id.Value };
         }
     }
 }

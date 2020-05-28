@@ -24,12 +24,14 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Orders
 
         public async Task<ICollection<Order>> GetByCustomerIdAsync(CustomerId customerId)
         {
-            return await ordersContext.Orders.Where(x => x.CustomerId == customerId).ToListAsync();
+            return await ordersContext.Orders.Include(x => x.OrderCars).Where(x => x.CustomerId == customerId).ToListAsync();
+            //var order =  await ordersContext.Orders.IncludePaths("OrderCars").ToListAsync();
+            
         }
 
         public async Task<Order> GetByIdAsync(OrderId orderId)
         {
-            return await ordersContext.Orders.Where(x => x.Id == orderId).Include(x => x.OrderCars)
+            return await ordersContext.Orders.Include(x => x.OrderCars).Where(x => x.Id == orderId)
                 .FirstOrDefaultAsync();
         }
     }

@@ -7,7 +7,6 @@ namespace CarRentalCo.Orders.Infrastructure.Database
     public class OrdersDbContext : DbContext
     {
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderCar> OrderCars { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
 

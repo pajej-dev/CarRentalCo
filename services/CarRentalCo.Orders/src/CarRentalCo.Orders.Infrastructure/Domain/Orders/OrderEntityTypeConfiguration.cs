@@ -29,7 +29,7 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Orders
             builder.Property(x => x.OrderStatus).HasColumnName("OrderStatus").HasConversion(x => x.ToString(),
                     v => (OrderStatus)Enum.Parse(typeof(OrderStatus), v));
 
-            builder.OwnsMany(prop => prop.OrderCars, x => 
+            builder.OwnsMany<OrderCar>("OrderCars", x =>
             {
                 x.WithOwner().HasForeignKey("OrderId");
                 x.ToTable(TableNames.OrderCars, TableSchemaNames.Orders);
@@ -40,6 +40,19 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Orders
                 x.Property(x => x.RentalStartDate).HasColumnName("RentalStartDate");
                 x.Property(x => x.RentalEndDate).HasColumnName("RentalEndDate");
             });
+
+
+            //builder.OwnsMany(prop => prop.OrderCars, x => 
+            //{
+            //    x.WithOwner().HasForeignKey("OrderId");
+            //    x.ToTable(TableNames.OrderCars, TableSchemaNames.Orders);
+            //    x.HasKey(x => x.Id);
+            //    x.Property(x => x.Id).HasColumnName("Id").HasConversion(new OrderCarIdValueConverter());
+            //    x.Property(x => x.RentalCarId).HasColumnName("RentalCarId").HasConversion(new RentalCarIdValueConverter());
+            //    x.Property(x => x.PricePerDay).HasColumnName("PricePerDay");
+            //    x.Property(x => x.RentalStartDate).HasColumnName("RentalStartDate");
+            //    x.Property(x => x.RentalEndDate).HasColumnName("RentalEndDate");
+            //});
         }
     }
 }

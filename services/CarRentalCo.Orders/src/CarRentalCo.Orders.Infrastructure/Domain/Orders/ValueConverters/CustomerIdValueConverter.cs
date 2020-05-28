@@ -8,7 +8,7 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Orders
     {
         public CustomerIdValueConverter(ConverterMappingHints converterMappingHints = null)
             : base(
-                    id => id.Id,
+                    id => id.Value,
                     val => new CustomerId(val), converterMappingHints
                   )
         { }
