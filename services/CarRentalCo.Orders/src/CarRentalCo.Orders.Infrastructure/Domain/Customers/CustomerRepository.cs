@@ -7,9 +7,9 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Customers
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private readonly OrdersContext ordersContext;
+        private readonly OrdersDbContext ordersContext;
 
-        public CustomerRepository(OrdersContext ordersContext)
+        public CustomerRepository(OrdersDbContext ordersContext)
         {
             this.ordersContext = ordersContext;
         }

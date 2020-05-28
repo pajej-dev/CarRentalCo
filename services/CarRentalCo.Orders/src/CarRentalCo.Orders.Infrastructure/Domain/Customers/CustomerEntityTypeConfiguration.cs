@@ -12,13 +12,15 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Customers
         {
             builder.ToTable(TableNames.Customers, TableSchemaNames.Orders);
 
+            builder.Property(x => x.Id).HasColumnName("Id").HasConversion(new CustomerIdValueConverter());
             builder.HasKey(x => x.Id);
-
             builder.Property<string>("fullName").HasColumnName("FullName");
             builder.Property<string>("email").HasColumnName("Email");
             builder.Property<DateTime>("dateOfBirth").HasColumnName("DateOfBirth");
             builder.Property<DateTime>("creationDate").HasColumnName("CreationDate");
             builder.Property<DateTime>("modificationDate").HasColumnName("ModificationDate");
+            builder.Property(x => x.Version).HasColumnName("Version").IsConcurrencyToken();
+
         }
 
     }

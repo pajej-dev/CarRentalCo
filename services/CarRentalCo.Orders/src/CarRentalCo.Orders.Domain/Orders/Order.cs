@@ -11,25 +11,26 @@ namespace CarRentalCo.Orders.Domain.Orders
     {
         public OrderId Id { get; private set; }
         public CustomerId CustomerId { get; private set; }
-        public IList<OrderCar> OrderCars => orderCars;
-        public double TotalPrice => totalPrice;
+        public IList<OrderCar> OrderCars { get; private set; }
+        public double TotalPrice { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public OrderStatus OrderStatus { get; private set; }
 
-        private IList<OrderCar> orderCars;
-        private double totalPrice;
-        private double totalDays;
-        private DateTime createdAt;
-        private OrderStatus orderStatus;
+        private long totalDays;
 
         private Order()
         {
+            this.OrderCars = new List<OrderCar>();
+
         }
 
         private Order(OrderId id, CustomerId customerId, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
         {
             Id = id;
-            this.orderCars = orderCars ?? new List<OrderCar>();
-            this.createdAt = createdAt;
-            this.orderStatus = orderStatus;
+            CustomerId = customerId;
+            this.OrderCars = orderCars ?? new List<OrderCar>();
+            this.CreatedAt = createdAt;
+            this.OrderStatus = orderStatus;
             this.CalculateTotalDays();
             this.CalculateTotalPrice();
 
@@ -40,21 +41,21 @@ namespace CarRentalCo.Orders.Domain.Orders
         {
             double price = 0;
 
-            foreach (var item in orderCars)
+            foreach (var item in OrderCars)
             {
                 price += ((item.RentalEndDate - item.RentalStartDate).TotalDays * item.PricePerDay);
             }
 
-            this.totalPrice = price;
+            this.TotalPrice = price;
         }
 
         private void CalculateTotalDays()
         {
-            double totalDays = 0;
+            long totalDays = 0;
 
-            foreach (var item in orderCars)
+            foreach (var item in OrderCars)
             {
-                totalDays += (item.RentalEndDate - item.RentalStartDate).TotalDays;
+                totalDays += (long)Math.Round(item.RentalEndDate.Subtract(item.RentalStartDate).TotalDays);
             }
 
             this.totalDays = totalDays;
@@ -69,23 +70,32 @@ namespace CarRentalCo.Orders.Domain.Orders
                 throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
             }
 
+            if(orderCars.Sum(x => (long)Math.Round(x.RentalEndDate.Subtract(x.RentalStartDate).TotalDays)) > 20)
+            {
+                throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
+            }
+
             return new Order(id, customerId, createdAt, OrderStatus.New, orderCars);
         }
 
         public void AddOrderCar(RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
         {
-            if (orderCars.Count == 3)
+            if (OrderCars.Count == 3)
             {
                 throw new OrderCannotContainsMoreThanThreeOrderCarsException("Order can contains only three OrderCars");
             }
 
+            if (OrderCars?.Any(x => x.RentalCarId == rentalCarId) ?? false)
+            {
+                throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
+            }
 
-            if (totalDays + (rentalEndDate - rentalStartDate).TotalDays > 20)
+            if (totalDays + (long)Math.Round(rentalEndDate.Subtract(rentalStartDate).TotalDays) > 20)
             {
                 throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
             }
 
-            orderCars.Add(OrderCar.Create(rentalCarId, pricePerDay, rentalStartDate, rentalEndDate));
+            OrderCars.Add(OrderCar.Create(rentalCarId, pricePerDay, rentalStartDate, rentalEndDate));
             AddDomainEvent(new OrderCarAddedDomainEvent(Id, rentalCarId, CustomerId));
 
             this.CalculateTotalDays();
@@ -94,13 +104,13 @@ namespace CarRentalCo.Orders.Domain.Orders
 
         public void RemoveOrderCar(RentalCarId rentalCarId)
         {
-            if (!orderCars.Any(x => x.RentalCarId == rentalCarId))
+            if (!OrderCars.Any(x => x.RentalCarId == rentalCarId))
             {
                 throw new OrderCarNotFoundInOrderException("Cannot create order with duplicate rental cars");
             }
 
-            var orderToRemove = orderCars.First(x => x.RentalCarId == rentalCarId);
-            orderCars.Remove(orderToRemove);
+            var orderToRemove = OrderCars.First(x => x.RentalCarId == rentalCarId);
+            OrderCars.Remove(orderToRemove);
             AddDomainEvent(new OrderCarRemovedDomainEvent(Id, rentalCarId, CustomerId));
 
             this.CalculateTotalDays();
@@ -109,23 +119,23 @@ namespace CarRentalCo.Orders.Domain.Orders
 
         public void CancelOrder()
         {
-            if (orderStatus == OrderStatus.Canceled || orderStatus == OrderStatus.Finished)
+            if (OrderStatus == OrderStatus.Canceled || OrderStatus == OrderStatus.Finished)
             {
-                throw new CannotChangeOrderStatusException(Id, orderStatus, OrderStatus.Canceled);
+                throw new CannotChangeOrderStatusException(Id, OrderStatus, OrderStatus.Canceled);
             }
 
-            orderStatus = OrderStatus.Canceled;
+            OrderStatus = OrderStatus.Canceled;
             AddDomainEvent(new OrderCanceledDomainEvent(Id, CustomerId));
         }
 
         public void FinishOrder()
         {
-            if (orderStatus == OrderStatus.Canceled || orderStatus == OrderStatus.Finished)
+            if (OrderStatus == OrderStatus.Canceled || OrderStatus == OrderStatus.Finished)
             {
-                throw new CannotChangeOrderStatusException(Id, orderStatus, OrderStatus.Finished);
+                throw new CannotChangeOrderStatusException(Id, OrderStatus, OrderStatus.Finished);
             }
 
-            orderStatus = OrderStatus.Finished;
+            OrderStatus = OrderStatus.Finished;
             AddDomainEvent(new OrderFinishedDomainEvent(Id, CustomerId));
         }
     }

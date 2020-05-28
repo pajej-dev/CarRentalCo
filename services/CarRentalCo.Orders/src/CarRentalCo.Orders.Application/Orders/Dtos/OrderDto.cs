@@ -9,9 +9,8 @@ namespace CarRentalCo.Orders.Application.Orders.Dtos
         public Guid CustomerId { get; set; }
         public IList<OrderCarDto> OrderCars { get; set; }
         public double TotalPrice { get; set; }
-        public double TotalDays { get; set; }
         public DateTime CreatedAt { get; set; }
-        public OrderStatus orderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
     }
 
     public enum OrderStatus

@@ -23,5 +23,13 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
         public Guid RentalCarId { get; private set; }
         public DateTime RentalStartDate { get; private set; }
         public DateTime RentalEndDate { get; private set; }
+
+        public CreateOrderOrderCarModel(Guid rentalCarId, DateTime rentalStartDate, DateTime rentalEndDate)
+        {
+            RentalCarId = rentalCarId;
+            RentalStartDate = rentalStartDate;
+            RentalEndDate = rentalEndDate;
+        }
+
     }
 }
