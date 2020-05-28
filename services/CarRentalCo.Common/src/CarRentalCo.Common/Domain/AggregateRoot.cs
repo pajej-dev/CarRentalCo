@@ -14,6 +14,7 @@ namespace CarRentalCo.Common.Domain
         {
             domainEvents = domainEvents ?? new List<IDomainEvent>();
             this.domainEvents.Add(domainEvent);
+            Version++;
         }
 
         public void ClearDomainEvents() 
