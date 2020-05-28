@@ -23,11 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarRentalCo.Commons", "CarR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Common", "services\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj", "{3AACA41F-25E6-4FCF-9A14-9078968B01E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalCo.Orders.Application", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.Application\CarRentalCo.Orders.Application.csproj", "{A8EF61E4-D40A-48C1-94AB-681D4F8D2DD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Orders.Application", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.Application\CarRentalCo.Orders.Application.csproj", "{A8EF61E4-D40A-48C1-94AB-681D4F8D2DD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalCo.Orders.Infrastructure", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.Infrastructure\CarRentalCo.Orders.Infrastructure.csproj", "{00AE9382-341F-4555-B621-91C05EE512E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Orders.Infrastructure", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.Infrastructure\CarRentalCo.Orders.Infrastructure.csproj", "{00AE9382-341F-4555-B621-91C05EE512E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalCo.Orders.API", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.API\CarRentalCo.Orders.API.csproj", "{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Orders.API", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.API\CarRentalCo.Orders.API.csproj", "{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalCo.Administration.Application", "services\CarRentalCo.Administration\src\CarRentalCo.Administration.Application\CarRentalCo.Administration.Application.csproj", "{B8991E18-A1AC-490F-AE60-308FDD5C1D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8991E18-A1AC-490F-AE60-308FDD5C1D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8991E18-A1AC-490F-AE60-308FDD5C1D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8991E18-A1AC-490F-AE60-308FDD5C1D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8991E18-A1AC-490F-AE60-308FDD5C1D18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{A8EF61E4-D40A-48C1-94AB-681D4F8D2DD4} = {BF9D623D-286D-4277-8C25-EB37AFBBE632}
 		{00AE9382-341F-4555-B621-91C05EE512E3} = {BF9D623D-286D-4277-8C25-EB37AFBBE632}
 		{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139} = {BF9D623D-286D-4277-8C25-EB37AFBBE632}
+		{B8991E18-A1AC-490F-AE60-308FDD5C1D18} = {EB0DA172-DAF9-4965-B008-A2D7F45B8C56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AFBC2FA-C203-4764-8735-776387E8BD69}

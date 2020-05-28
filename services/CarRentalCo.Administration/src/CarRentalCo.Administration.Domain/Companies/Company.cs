@@ -22,26 +22,24 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         private Company()
         {
+            this.agencies = new List<Agency>();
         }
 
-        private Company(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact, IList<Agency> agenciess)
+        private Company(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact)
         {
             this.Id = id;
             this.OwnerId = ownerId;
             this.setUpDate = setUpDate;
-            this.agencies = agenciess;
             this.companyContact = companyContact;
-            this.agencies = agenciess ?? new List<Agency>();
+            this.agencies = new List<Agency>();
 
             AddDomainEvent(new CompanyCreatedDomainEvent(Id, OwnerId));
         }
 
-        public static Company Create(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact, IList<Agency> agencies = null)
+        public static Company Create(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact)
         {
-            if (agencies.Count > 10)
-                throw new CreateCompanyRejectedException("Company cannot contains more than 10 Agencies");
 
-            return new Company(id, ownerId, name, setUpDate, companyContact, agencies);
+            return new Company(id, ownerId, name, setUpDate, companyContact);
         }
 
         public void AddCompanyAgency(AgencyId agencyId)

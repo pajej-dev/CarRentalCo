@@ -17,7 +17,7 @@ namespace CarRentalCo.Administration.Domain.Companies
             this.Phone = phone;
         }
         
-        public CompanyContact Create(string email, string phone)
+        public static CompanyContact Create(string email, string phone)
         {
             //validate email and phone
 
