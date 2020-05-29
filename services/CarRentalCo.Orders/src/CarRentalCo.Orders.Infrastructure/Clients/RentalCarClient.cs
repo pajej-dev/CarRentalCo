@@ -1,7 +1,8 @@
-﻿using CarRentalCo.Orders.Application.Orders.Dtos;
-using CarRentalCo.Orders.Application.Orders.Features.CreateOrder;
+﻿using CarRentalCo.Orders.Application.Orders.Clients;
+using CarRentalCo.Orders.Application.Orders.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarRentalCo.Orders.Infrastructure.Clients
@@ -13,13 +14,17 @@ namespace CarRentalCo.Orders.Infrastructure.Clients
 
         }
 
-        public async Task<ICollection<RentalCarDto>> GetByIdsAsync(Guid[] Ids)
+        public async Task<RentalCarDto> GetByIdAsync(Guid id)
+        {
+            return await Task.FromResult(new RentalCarDto { Id = id, PricePerDay = 25, Brand = "Toyota", Model = "Yaris" });
+        }
+
+        public async Task<ICollection<RentalCarDto>> GetByIdsAsync(Guid[] ids)
         {
             //todo mocks
-            var rentalcar = new RentalCarDto { Id = Guid.NewGuid(), PricePerDay = 25, Brand = "Toyota", Model = "Yaris" };
-            var rentalcar2 = new RentalCarDto { Id = Guid.NewGuid(), PricePerDay = 35, Brand = "Toyota", Model = "Avensis" };
+            var rentalCars = ids.Select(x => new RentalCarDto { Id = x, PricePerDay = 25, Brand = "Toyota", Model = "Yaris" }).ToList();
 
-            return await Task.FromResult(new List<RentalCarDto>() { rentalcar, rentalcar2 });
+            return await Task.FromResult(rentalCars);
         }
     }
 }

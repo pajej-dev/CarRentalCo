@@ -1,6 +1,7 @@
 ﻿using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Orders.API.Requests;
 using CarRentalCo.Orders.Application.Orders.Dtos;
+using CarRentalCo.Orders.Application.Orders.Features.AddOrderCar;
 using CarRentalCo.Orders.Application.Orders.Features.CreateOrder;
 using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrder;
@@ -23,17 +24,20 @@ namespace CarRentalCo.Orders.API.Controllers
         private readonly IQueryHandler<GetOrderQuery, OrderDto> getOrderQueryHandler;
         private readonly IQueryHandler<GetCustomerOrdersQuery, ICollection<OrderDto>> getCustomerOrdersQuery;
         private readonly ICommandHandler<CreateOrderCommand> createOrderCommandHandler;
+        private readonly ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler;
 
         public OrdersController(IQueryHandler<GetOrdersQuery,ICollection<OrderDto>> getOrdersQueryHandler,
                 IQueryHandler<GetOrderQuery, OrderDto> getOrderQueryHandler,
                 IQueryHandler<GetCustomerOrdersQuery, ICollection<OrderDto>> getCustomerOrdersQuery,
-                ICommandHandler<CreateOrderCommand> createOrderCommandHandler
+                ICommandHandler<CreateOrderCommand> createOrderCommandHandler,
+                ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler
             )
         {
             this.getOrdersQueryHandler = getOrdersQueryHandler;
             this.getOrderQueryHandler = getOrderQueryHandler;
             this.getCustomerOrdersQuery = getCustomerOrdersQuery;
             this.createOrderCommandHandler = createOrderCommandHandler;
+            this.addOrderCarCommandHandler = addOrderCarCommandHandler;
         }
 
         /// <summary>
@@ -111,13 +115,30 @@ namespace CarRentalCo.Orders.API.Controllers
         /// <response code="200">Created an order</response>
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> GetCustomerOrders([FromBody] CreateOrderRequest command)
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest command)
         {
             //todo mapper
             await createOrderCommandHandler.HandleAsync(new CreateOrderCommand(command.OrderId, command.CustomerId,
                 command.OrderCars.Select(x => new CreateOrderOrderCarModel(x.RentalCarId, x.RentalStartDate, x.RentalEndDate)).ToList()));
 
             return Ok(command.OrderId);
+        }
+
+        /// <summary>
+        /// Add order car
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <response code="200">Added an order car</response>
+        [HttpPost]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> AddOrderCar([FromBody] AddOrderCarRequest command)
+        {
+            //todo mapper
+            await addOrderCarCommandHandler.HandleAsync(new AddOrderCarCommand(command.OrderId, command.RentalCarId,
+                command.RentalStartDate, command.RentalEndDate));
+
+            return Ok();
         }
 
     }

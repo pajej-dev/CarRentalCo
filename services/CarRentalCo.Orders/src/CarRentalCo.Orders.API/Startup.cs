@@ -1,4 +1,5 @@
 using CarRentalCo.Common.Application.Handlers;
+using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Application.Orders.Features.CreateOrder;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
@@ -45,15 +46,15 @@ namespace CarRentalCo.Orders.API
 
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<IRentalCarClient, RentalCarClient>();
             services.AddTransient<IGetOrdersService, GetOrdersService>();
-       //db
-       var connectionString = Configuration.GetConnectionString("CarRentalCo");
-            services.AddDbContextPool<OrdersDbContext>(
-                options =>
-                {
-                    options.UseSqlServer(connectionString);
-                });
+            services.AddTransient<IRentalCarClient, RentalCarClient>();
+           //db
+           var connectionString = Configuration.GetConnectionString("CarRentalCo");
+                services.AddDbContextPool<OrdersDbContext>(
+                    options =>
+                    {
+                        options.UseSqlServer(connectionString);
+                    });
 
 
             services.Scan(x => x.FromAssemblyOf<OrderCarDto>()

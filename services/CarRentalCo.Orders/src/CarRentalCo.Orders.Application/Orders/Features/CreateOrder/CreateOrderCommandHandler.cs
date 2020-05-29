@@ -1,5 +1,6 @@
 ﻿using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Common.Other;
+using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
 using System;
@@ -29,14 +30,14 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
             var rentalCars = await rentalCarClient.GetByIdsAsync(command.OrderCars.Select(c => c.RentalCarId).ToArray());
 
             var customer = await customerRepository.GetByIdAsync(new Domain.Customers.CustomerId(command.CustomerId));
-            if(customer == null)
+            if (customer == null)
             {
                 throw new Exception("Cannot create order. Customer not exists."); //todo create application exceptions
             }
 
             //match prices to orderCars
             var orderCars = new List<OrderCar>();
-            foreach(var oc in command.OrderCars)
+            foreach (var oc in command.OrderCars)
             {
                 //var car = carPrices.FirstOrDefault(x => x.Id == oc.RentalCarId);
                 //if (car == null)

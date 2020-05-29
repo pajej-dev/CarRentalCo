@@ -18,7 +18,7 @@ namespace CarRentalCo.Orders.Infrastructure.Domain.Customers
             builder.Property<string>("email").HasColumnName("Email");
             builder.Property<DateTime>("dateOfBirth").HasColumnName("DateOfBirth");
             builder.Property<DateTime>("creationDate").HasColumnName("CreationDate");
-            builder.Property<DateTime>("modificationDate").HasColumnName("ModificationDate");
+            builder.Property<DateTime?>("modificationDate").HasColumnName("ModificationDate").IsRequired(false);
             builder.Property(x => x.Version).HasColumnName("Version").IsConcurrencyToken();
 
         }

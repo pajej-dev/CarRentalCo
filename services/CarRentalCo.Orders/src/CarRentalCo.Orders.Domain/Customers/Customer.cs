@@ -13,7 +13,7 @@ namespace CarRentalCo.Orders.Domain.Customers
         private string email;
         private DateTime dateOfBirth;
         private DateTime creationDate;
-        private DateTime modificationDate;
+        private DateTime? modificationDate;
 
         private Customer() { }
 
