@@ -4,6 +4,7 @@ using CarRentalCo.Common.Infrastructure.Mongo;
 using CarRentalCo.Orders.API.Extensions;
 using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
+using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
@@ -44,6 +45,7 @@ namespace CarRentalCo.Orders.API
         {
             services.AddControllers();
             services.AddTransient<IGetOrdersService, GetOrdersService>();
+            services.AddTransient<IGetCustomerOrdersService, GetCustomerOrdersService>();
             services.AddTransient<IRentalCarClient, RentalCarClient>();
             services.AddOrdersMongo(Configuration);
             services.AddSwagger();

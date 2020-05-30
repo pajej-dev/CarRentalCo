@@ -1,4 +1,5 @@
 ﻿using CarRentalCo.Common.Application.Handlers;
+using CarRentalCo.Common.Infrastructure.Types;
 using CarRentalCo.Orders.API.Requests;
 using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Application.Orders.Features.AddOrderCar;
@@ -20,15 +21,15 @@ namespace CarRentalCo.Orders.API.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly IQueryHandler<GetOrdersQuery, ICollection<OrderDto>> getOrdersQueryHandler;
+        private readonly IQueryHandler<GetOrdersQuery, PagedResult<OrderDto>> getOrdersQueryHandler;
         private readonly IQueryHandler<GetOrderQuery, OrderDto> getOrderQueryHandler;
-        private readonly IQueryHandler<GetCustomerOrdersQuery, ICollection<OrderDto>> getCustomerOrdersQuery;
+        private readonly IQueryHandler<GetCustomerOrdersQuery, PagedResult<OrderDto>> getCustomerOrdersQuery;
         private readonly ICommandHandler<CreateOrderCommand> createOrderCommandHandler;
         private readonly ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler;
 
-        public OrdersController(IQueryHandler<GetOrdersQuery,ICollection<OrderDto>> getOrdersQueryHandler,
+        public OrdersController(IQueryHandler<GetOrdersQuery,PagedResult<OrderDto>> getOrdersQueryHandler,
                 IQueryHandler<GetOrderQuery, OrderDto> getOrderQueryHandler,
-                IQueryHandler<GetCustomerOrdersQuery, ICollection<OrderDto>> getCustomerOrdersQuery,
+                IQueryHandler<GetCustomerOrdersQuery, PagedResult<OrderDto>> getCustomerOrdersQuery,
                 ICommandHandler<CreateOrderCommand> createOrderCommandHandler,
                 ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler
             )
@@ -56,7 +57,7 @@ namespace CarRentalCo.Orders.API.Controllers
         {
             var result = await getOrdersQueryHandler.HandleAsync(new GetOrdersQuery { PageNumber = pageNumber, PageSize = pageSize});
 
-            if (result == null || result.Count == 0)
+            if (result == null)
                 return NotFound();
 
             return Ok(result);

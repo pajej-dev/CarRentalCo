@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Mongo.Customers;
@@ -14,6 +15,24 @@ namespace CarRentalCo.Orders.Infrastructure.Mappings
             => Order.Create(new OrderId(orderDocument.Id), new CustomerId(orderDocument.CustomerId), orderDocument.CreatedAt,
                      orderDocument.OrderCars.Select(car => OrderCar.Create(new OrderCarId(car.Id), new RentalCarId(car.RentalCarId),
                         car.PricePerDay, car.RentalStartDate, car.RentalEndDate)).ToList());
+
+        public static OrderDto ToDto(this OrderDocument orderDocument)
+            => new OrderDto
+            {
+                Id = orderDocument.Id,
+                CreatedAt = orderDocument.CreatedAt,
+                CustomerId = orderDocument.CustomerId,
+                OrderCars = orderDocument.OrderCars.Select(z => new OrderCarDto
+                {
+                    Id = z.Id,
+                    PricePerDay = z.PricePerDay,
+                    RentalCarId = z.RentalCarId,
+                    RentalEndDate = z.RentalEndDate,
+                    RentalStartDate = z.RentalStartDate
+                }).ToList(),
+                OrderStatus = (Application.Orders.Dtos.OrderStatus)orderDocument.OrderStatus,
+                TotalPrice = orderDocument.TotalPrice
+            };
 
         public static OrderDocument ToDocument(this Order order)
         => new OrderDocument
@@ -47,6 +66,8 @@ namespace CarRentalCo.Orders.Infrastructure.Mappings
             FullName = customer.FullName,
             ModificationDate = customer.ModificationDate
         };
+
+
 
     }
 

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CarRentalCo.Common.Infrastructure.Mongo;
+﻿using CarRentalCo.Common.Infrastructure.Mongo;
 using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Mappings;
 using System.Threading.Tasks;
