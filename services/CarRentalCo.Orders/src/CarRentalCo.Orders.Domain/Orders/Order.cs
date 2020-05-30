@@ -15,8 +15,7 @@ namespace CarRentalCo.Orders.Domain.Orders
         public double TotalPrice { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public OrderStatus OrderStatus { get; private set; }
-
-        private long totalDays;
+        public long TotalDays { get; private set; }
 
         private Order()
         {
@@ -58,7 +57,7 @@ namespace CarRentalCo.Orders.Domain.Orders
                 totalDays += (long)Math.Round(item.RentalEndDate.Subtract(item.RentalStartDate).TotalDays);
             }
 
-            this.totalDays = totalDays;
+            this.TotalDays = totalDays;
         }
 
 
@@ -90,12 +89,12 @@ namespace CarRentalCo.Orders.Domain.Orders
                 throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
             }
 
-            if (totalDays + (long)Math.Round(rentalEndDate.Subtract(rentalStartDate).TotalDays) > 20)
+            if (TotalDays + (long)Math.Round(rentalEndDate.Subtract(rentalStartDate).TotalDays) > 20)
             {
                 throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
             }
 
-            OrderCars.Add(OrderCar.Create(rentalCarId, pricePerDay, rentalStartDate, rentalEndDate));
+            OrderCars.Add(OrderCar.Create(null,rentalCarId, pricePerDay, rentalStartDate, rentalEndDate));
             AddDomainEvent(new OrderCarAddedDomainEvent(Id, rentalCarId, CustomerId));
 
             this.CalculateTotalDays();

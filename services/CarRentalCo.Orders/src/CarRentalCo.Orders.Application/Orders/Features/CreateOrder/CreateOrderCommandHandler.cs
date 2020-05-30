@@ -39,16 +39,15 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
             var orderCars = new List<OrderCar>();
             foreach (var oc in command.OrderCars)
             {
-                //var car = carPrices.FirstOrDefault(x => x.Id == oc.RentalCarId);
-                //if (car == null)
-                //    continue;
+                var car = orderCars.FirstOrDefault(x => x.RentalCarId.Value == oc.RentalCarId);
+                if (car == null)
+                    continue;
 
-                orderCars.Add(OrderCar.Create(new RentalCarId(oc.RentalCarId), 25/*car.PricePerDay*/, oc.RentalStartDate, oc.RentalEndDate));
+                orderCars.Add(OrderCar.Create(Guid.Empty,new RentalCarId(oc.RentalCarId), car.PricePerDay, oc.RentalStartDate, oc.RentalEndDate));
             }
 
             var order = Order.Create(new OrderId(command.OrderId), new CustomerId(command.CustomerId), SystemTime.UtcNow, orderCars);
             await orderRepository.AddAsync(order);
-            //todo commit
         }
     }
 }

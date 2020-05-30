@@ -31,7 +31,8 @@ namespace CarRentalCo.Orders.Application.Orders.Features.AddOrderCar
                 throw new Exception("Cannot Add order car. RentalCarId not found");
             }
 
-            order.AddOrderCar(new RentalCarId(command.RentalCarId), rentalCar.PricePerDay, command.RentalStartDate, command.RentalEndDate );   
+            order.AddOrderCar(new RentalCarId(command.RentalCarId), rentalCar.PricePerDay, command.RentalStartDate, command.RentalEndDate );
+            await orderRepository.UpdateAsync(order);
         }
     }
 }

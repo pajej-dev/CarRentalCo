@@ -131,6 +131,7 @@ namespace CarRentalCo.Orders.API.Controllers
         /// </remarks>
         /// <response code="200">Added an order car</response>
         [HttpPost]
+        [Route("orderCar")]
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> AddOrderCar([FromBody] AddOrderCarRequest command)
         {

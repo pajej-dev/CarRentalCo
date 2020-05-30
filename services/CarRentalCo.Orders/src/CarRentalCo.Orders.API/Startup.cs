@@ -60,7 +60,7 @@ namespace CarRentalCo.Orders.API
 
             services.AddMongo(Configuration);
             services.AddMongoRepository<OrderDocument>("Orders");
-            services.AddMongoRepository<CustomerDocument>("CustomerDocuments");
+            services.AddMongoRepository<CustomerDocument>("Customer");
 
             services.AddAutoMapper(typeof(MongoDocumentsProfle));
 

@@ -16,21 +16,22 @@ namespace CarRentalCo.Orders.Domain.Orders
         {
         }
 
-        private OrderCar(RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
+        private OrderCar(OrderCarId id, RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
         {
-            Id = new OrderCarId(Guid.NewGuid());
+            Id = (id == null || id.Value == Guid.Empty) ? new OrderCarId(Guid.NewGuid()) : id;
+
             RentalCarId = rentalCarId;
             PricePerDay = pricePerDay;
             RentalStartDate = rentalStartDate;
             RentalEndDate = rentalEndDate;
         }
 
-        public static OrderCar Create(RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
+        public static OrderCar Create(OrderCarId id,RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
         {
             if ((rentalEndDate - rentalStartDate).TotalDays < 1)
                 throw new OrderCarRentalTooShortException($"Cannot create car rental shorter than 1 day");
 
-            return new OrderCar(rentalCarId, pricePerDay, rentalStartDate, rentalEndDate);
+            return new OrderCar(id, rentalCarId, pricePerDay, rentalStartDate, rentalEndDate);
         }
     }
 }
