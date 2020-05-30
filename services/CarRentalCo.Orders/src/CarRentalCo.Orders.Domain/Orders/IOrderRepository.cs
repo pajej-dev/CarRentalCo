@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using CarRentalCo.Common.Domain;
+using System.Threading.Tasks;
 
 namespace CarRentalCo.Orders.Domain.Orders
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IDomainRepository
     {
         Task AddAsync(Order order);
         Task UpdateAsync(Order order);

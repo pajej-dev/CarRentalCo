@@ -43,7 +43,7 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
                 if (car == null)
                     continue;
 
-                orderCars.Add(OrderCar.Create(Guid.Empty,new RentalCarId(oc.RentalCarId), car.PricePerDay, oc.RentalStartDate, oc.RentalEndDate));
+                orderCars.Add(OrderCar.Create(null,new RentalCarId(oc.RentalCarId), car.PricePerDay, oc.RentalStartDate, oc.RentalEndDate));
             }
 
             var order = Order.Create(new OrderId(command.OrderId), new CustomerId(command.CustomerId), SystemTime.UtcNow, orderCars);

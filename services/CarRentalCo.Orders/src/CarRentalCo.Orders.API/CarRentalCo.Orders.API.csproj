@@ -16,8 +16,4 @@
     <ProjectReference Include="..\CarRentalCo.Orders.Infrastructure\CarRentalCo.Orders.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>
