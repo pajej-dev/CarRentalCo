@@ -18,24 +18,24 @@ namespace CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders
 
         public async Task<ICollection<OrderDto>> HandleAsync(GetCustomerOrdersQuery query)
         {
-            var result = await orderRepository.GetByCustomerIdAsync(new CustomerId(query.CustomerId));
+            //var result = await orderRepository.get(new CustomerId(query.CustomerId));
 
-            var dtos = result.Select(order => new OrderDto 
-            {
-                Id = order.Id.Value,
-                CustomerId = order.CustomerId.Value,
-                TotalPrice = order.TotalPrice,
-                OrderCars = order.OrderCars.Select(x => new OrderCarDto
-                {
-                    Id = x.Id.Value,
-                    PricePerDay = x.PricePerDay,
-                    RentalCarId = x.RentalCarId.Value,
-                    RentalEndDate = x.RentalEndDate,
-                    RentalStartDate = x.RentalStartDate
-                }).ToList()
-            });
+            //var dtos = result.Select(order => new OrderDto 
+            //{
+            //    Id = order.Id.Value,
+            //    CustomerId = order.CustomerId.Value,
+            //    TotalPrice = order.TotalPrice,
+            //    OrderCars = order.OrderCars.Select(x => new OrderCarDto
+            //    {
+            //        Id = x.Id.Value,
+            //        PricePerDay = x.PricePerDay,
+            //        RentalCarId = x.RentalCarId.Value,
+            //        RentalEndDate = x.RentalEndDate,
+            //        RentalStartDate = x.RentalStartDate
+            //    }).ToList()
+            //});
 
-            return dtos?.ToList();
+            return null;// dtos?.ToList();
         }
     }
 }

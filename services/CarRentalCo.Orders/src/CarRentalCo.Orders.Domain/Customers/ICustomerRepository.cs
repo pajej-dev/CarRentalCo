@@ -6,6 +6,8 @@ namespace CarRentalCo.Orders.Domain.Customers
     {
         Task AddAsync(Customer customer);
 
-        Task<Customer> GetByIdAsync(CustomerId customerId);
+        Task<Customer> GetByIdAsync(CustomerId id);
+
+        Task<bool> ExistsAsync(CustomerId id);
     }
 }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
@@ -5,13 +6,15 @@ using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Clients;
-using CarRentalCo.Orders.Infrastructure.Domain.Customers;
-using CarRentalCo.Orders.Infrastructure.Domain.Orders;
+using CarRentalCo.Orders.Infrastructure.Mongo.Customers;
+using CarRentalCo.Orders.Infrastructure.Mongo.Orders;
+using CarRentalCo.Orders.Infrastructure.Profiles;
 using CarRentalCo.Orders.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CarRentalCo.Common.Infrastructure.Mongo;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
@@ -41,8 +44,8 @@ namespace CarRentalCo.Orders.API
         {
             services.AddControllers();
 
-            services.AddTransient<IOrderRepository, OrderRepository>();
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IOrderRepository, OrderMongoRepository>();
+            services.AddTransient<ICustomerRepository, CustomerMongoRepository>();
             services.AddTransient<IGetOrdersService, GetOrdersService>();
             services.AddTransient<IRentalCarClient, RentalCarClient>();
 
@@ -55,7 +58,11 @@ namespace CarRentalCo.Orders.API
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
 
+            services.AddMongo(Configuration);
+            services.AddMongoRepository<OrderDocument>("Orders");
+            services.AddMongoRepository<CustomerDocument>("CustomerDocuments");
 
+            services.AddAutoMapper(typeof(MongoDocumentsProfle));
 
 
             //swagger

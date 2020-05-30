@@ -8,27 +8,26 @@ namespace CarRentalCo.Orders.Domain.Customers
     public class Customer : AggregateRoot, IEntity<CustomerId>
     {
         public CustomerId Id { get; private set; }
-
-        private string fullName;
-        private string email;
-        private DateTime dateOfBirth;
-        private DateTime creationDate;
-        private DateTime? modificationDate;
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime ModificationDate { get; set; }
 
         private Customer() { }
 
-        private Customer(Guid id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
+        private Customer(CustomerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
         {
-            this.Id = new CustomerId(id);
-            this.fullName = fullName;
-            this.email = email;
-            this.dateOfBirth = dateOfBirth;
-            this.creationDate = creationDate;
+            this.Id =id;
+            this.FullName = fullName;
+            this.Email = email;
+            this.DateOfBirth = dateOfBirth;
+            this.CreationDate = creationDate;
 
             AddDomainEvent(new CustomerCreatedDomainEvent(Id));
         }
 
-        public static Customer Create(Guid id, string fullName, string email, DateTime dateOfBirth)
+        public static Customer Create(CustomerId id, string fullName, string email, DateTime dateOfBirth)
         {
             return new Customer(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
         }

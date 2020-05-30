@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Orders.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Orders.API", "services\CarRentalCo.Orders\src\CarRentalCo.Orders.API\CarRentalCo.Orders.API.csproj", "{508EEBAE-DB7C-4ECF-91E2-9393C4CCC139}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalCo.Administration.Application", "services\CarRentalCo.Administration\src\CarRentalCo.Administration.Application\CarRentalCo.Administration.Application.csproj", "{B8991E18-A1AC-490F-AE60-308FDD5C1D18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalCo.Administration.Application", "services\CarRentalCo.Administration\src\CarRentalCo.Administration.Application\CarRentalCo.Administration.Application.csproj", "{B8991E18-A1AC-490F-AE60-308FDD5C1D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
