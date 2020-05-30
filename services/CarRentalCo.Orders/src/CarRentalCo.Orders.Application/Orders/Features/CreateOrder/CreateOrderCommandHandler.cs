@@ -39,7 +39,7 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
             var orderCars = new List<OrderCar>();
             foreach (var oc in command.OrderCars)
             {
-                var car = orderCars.FirstOrDefault(x => x.RentalCarId.Value == oc.RentalCarId);
+                var car = rentalCars.FirstOrDefault(x => x.Id == oc.RentalCarId);
                 if (car == null)
                     continue;
 
