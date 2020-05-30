@@ -1,23 +1,15 @@
-using AutoMapper;
-using CarRentalCo.Common.Application.Handlers;
-using CarRentalCo.Common.Infrastructure.Mongo;
+using CarRentalCo.Common.Middlewares;
 using CarRentalCo.Orders.API.Extensions;
 using CarRentalCo.Orders.Application.Orders.Clients;
-using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
-using CarRentalCo.Orders.Domain.Customers;
-using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Clients;
-using CarRentalCo.Orders.Infrastructure.Mongo.Customers;
-using CarRentalCo.Orders.Infrastructure.Mongo.Orders;
 using CarRentalCo.Orders.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace CarRentalCo.Orders.API
 {
@@ -44,6 +36,7 @@ namespace CarRentalCo.Orders.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddLogging();
             services.AddTransient<IGetOrdersService, GetOrdersService>();
             services.AddTransient<IGetCustomerOrdersService, GetCustomerOrdersService>();
             services.AddTransient<IRentalCarClient, RentalCarClient>();
@@ -59,6 +52,7 @@ namespace CarRentalCo.Orders.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
