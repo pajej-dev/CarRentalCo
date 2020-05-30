@@ -1,18 +1,15 @@
 using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
-using CarRentalCo.Orders.Application.Orders.Features.CreateOrder;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Clients;
-using CarRentalCo.Orders.Infrastructure.Database;
 using CarRentalCo.Orders.Infrastructure.Domain.Customers;
 using CarRentalCo.Orders.Infrastructure.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,13 +45,6 @@ namespace CarRentalCo.Orders.API
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IGetOrdersService, GetOrdersService>();
             services.AddTransient<IRentalCarClient, RentalCarClient>();
-           //db
-           var connectionString = Configuration.GetConnectionString("CarRentalCo");
-                services.AddDbContextPool<OrdersDbContext>(
-                    options =>
-                    {
-                        options.UseSqlServer(connectionString);
-                    });
 
 
             services.Scan(x => x.FromAssemblyOf<OrderCarDto>()
