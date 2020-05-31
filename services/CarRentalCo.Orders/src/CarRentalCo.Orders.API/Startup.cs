@@ -46,6 +46,7 @@ namespace CarRentalCo.Orders.API
             services.AddOrdersMongo(Configuration);
             services.AddSwagger();
             services.AddScrutorScan();
+            services.AddHealthChecks();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -64,7 +65,11 @@ namespace CarRentalCo.Orders.API
             });
 
             app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => 
+            { 
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }

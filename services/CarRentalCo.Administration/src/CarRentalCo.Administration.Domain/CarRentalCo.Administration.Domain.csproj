@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj" />
+    <PackageReference Include="CarRentalCo.Common" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

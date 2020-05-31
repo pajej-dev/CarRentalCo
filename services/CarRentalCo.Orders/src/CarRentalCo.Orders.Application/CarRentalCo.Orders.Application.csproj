@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="CarRentalCo.Common" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj" />
     <ProjectReference Include="..\CarRentalCo.Orders.Domain\CarRentalCo.Orders.Domain.csproj" />
   </ItemGroup>
 

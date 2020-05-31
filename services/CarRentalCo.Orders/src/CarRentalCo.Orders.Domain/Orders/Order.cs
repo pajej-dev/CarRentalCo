@@ -22,7 +22,7 @@ namespace CarRentalCo.Orders.Domain.Orders
             var groupedOrderCars = orderCars.GroupBy(x => x.RentalCarId);
             if (groupedOrderCars?.Any(x => x.Count() > 1) ?? false)
             {
-                throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
+                throw new OrderCannotContainsDuplicateRentalCarsException("Order cannot contains duplicate rental cars");
             }
 
             if (orderCars.Sum(x => (long)Math.Round(x.RentalEndDate.Subtract(x.RentalStartDate).TotalDays)) > 20)
@@ -100,7 +100,7 @@ namespace CarRentalCo.Orders.Domain.Orders
         {
             if (!OrderCars.Any(x => x.RentalCarId == rentalCarId))
             {
-                throw new OrderCarNotFoundInOrderException("Cannot create order with duplicate rental cars");
+                throw new OrderCarNotFoundInOrderException("Cannot remove order car. RentalCarId not found in Order");
             }
 
             var orderToRemove = OrderCars.First(x => x.RentalCarId == rentalCarId);

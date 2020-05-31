@@ -1,0 +1,7 @@
+src/*/bin/*
+src/*/obj/*
+out/*
+.vscode/*
+README.md
+***.pfx
+***.png

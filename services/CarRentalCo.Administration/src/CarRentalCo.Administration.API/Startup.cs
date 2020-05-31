@@ -41,6 +41,7 @@ namespace CarRentalCo.Administration.API
             services.AddCompanyMongo(Configuration);
             services.AddSwagger();
             services.AddScrutorScan();
+            services.AddHealthChecks();
             services.AddAutoMapper(typeof(CompanyDto).Assembly,
                 typeof(CompanyDocument).Assembly);
 
@@ -62,7 +63,11 @@ namespace CarRentalCo.Administration.API
             });
 
             app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }

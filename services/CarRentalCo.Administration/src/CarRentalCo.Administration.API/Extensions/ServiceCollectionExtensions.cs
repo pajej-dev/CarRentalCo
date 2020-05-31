@@ -26,7 +26,7 @@ namespace CarRentalCo.Administration.API.Extensions
             //swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarRentalCo.Orders", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarRentalCo.Administration", Version = "v1" });
             });
         }
 
