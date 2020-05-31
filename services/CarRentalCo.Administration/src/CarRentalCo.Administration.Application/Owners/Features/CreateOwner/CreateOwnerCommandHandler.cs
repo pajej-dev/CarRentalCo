@@ -1,8 +1,6 @@
 ﻿using CarRentalCo.Administration.Domain.Owners;
 using CarRentalCo.Common.Application.Handlers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CarRentalCo.Administration.Application.Owners.Features.CreateOwner

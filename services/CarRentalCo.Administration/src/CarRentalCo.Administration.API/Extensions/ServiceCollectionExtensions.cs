@@ -1,6 +1,7 @@
 ﻿using CarRentalCo.Administration.Application.Companies.Dtos;
 using CarRentalCo.Administration.Infrastructure.Mongo.Companies;
 using CarRentalCo.Administration.Infrastructure.Mongo.Owners;
+using CarRentalCo.Administration.Infrastructure.Mongo.RentalCars;
 using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Common.Domain;
 using CarRentalCo.Common.Infrastructure.Mongo;
@@ -17,6 +18,7 @@ namespace CarRentalCo.Administration.API.Extensions
             services.AddMongo(configuration);
             services.AddMongoRepository<CompanyDocument>("companies");
             services.AddMongoRepository<OwnerDocument>("owners");
+            services.AddMongoRepository<RentalCarDocument>("rentalCars");
         }
 
         public static void AddSwagger(this IServiceCollection services)

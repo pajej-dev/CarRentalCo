@@ -9,13 +9,10 @@ namespace CarRentalCo.Administration.Domain.RentalCars
         public DateTime InsurrenceValidThru { get; private set; }
         public DateTime OilValidThru { get; private set; }
 
-
-        private RentalCarOperatingInfo()
+        public  RentalCarOperatingInfo(DateTime technicalReviewValidThru, DateTime insurrenceValidThru, DateTime oilValidThru)
         {
-        }
+            //perform date validation (date must be greater than today)
 
-        private RentalCarOperatingInfo(DateTime technicalReviewValidThru, DateTime insurrenceValidThru, DateTime oilValidThru)
-        {
             TechnicalReviewValidThru = technicalReviewValidThru;
             InsurrenceValidThru = insurrenceValidThru;
             OilValidThru = oilValidThru;
@@ -24,8 +21,6 @@ namespace CarRentalCo.Administration.Domain.RentalCars
 
         public static RentalCarOperatingInfo Create(DateTime technicalReviewValidThru, DateTime insurrenceValidThru, DateTime oilValidThru)
         {
-            //perform date validation (date must be greater than today)
-
             return new RentalCarOperatingInfo(technicalReviewValidThru, insurrenceValidThru, oilValidThru);
         }
 

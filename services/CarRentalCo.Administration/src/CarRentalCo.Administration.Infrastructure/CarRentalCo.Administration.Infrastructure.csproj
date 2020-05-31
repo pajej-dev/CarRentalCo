@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mongo\RentalCars\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CarRentalCo.Administration.Domain\CarRentalCo.Administration.Domain.csproj" />
   </ItemGroup>
 

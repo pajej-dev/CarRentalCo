@@ -1,5 +1,6 @@
 ﻿using CarRentalCo.Administration.API.Requests;
 using CarRentalCo.Administration.Application.Companies.Dtos;
+using CarRentalCo.Administration.Application.Companies.Features.AddAgencyRentalCar;
 using CarRentalCo.Administration.Application.Companies.Features.AddCompanyAgency;
 using CarRentalCo.Administration.Application.Companies.Features.CreateCompany;
 using CarRentalCo.Administration.Application.Companies.Features.GetCompany;
@@ -20,15 +21,18 @@ namespace CarRentalCo.Administration.API.Controllers
     {
         private readonly ICommandHandler<CreateCompanyCommand> createCompanyHandler;
         private readonly ICommandHandler<AddCompanyAgencyCommand> addCompanyAgencyHandler;
+        private readonly ICommandHandler<AddAgencyRentalCarCommand> addRentalCarHandler;
         private readonly IQueryHandler<GetCompanyQuery, CompanyDto> getCompanyHandler;
 
         public CompanyController(ICommandHandler<CreateCompanyCommand> createCompanyHandler,
             IQueryHandler<GetCompanyQuery, CompanyDto> getCompanyHandler,
-            ICommandHandler<AddCompanyAgencyCommand> addCompanyAgencyHandler)
+            ICommandHandler<AddCompanyAgencyCommand> addCompanyAgencyHandler,
+            ICommandHandler<AddAgencyRentalCarCommand> addRentalCarHandler)
         {
             this.createCompanyHandler = createCompanyHandler;
             this.getCompanyHandler = getCompanyHandler;
             this.addCompanyAgencyHandler = addCompanyAgencyHandler;
+            this.addRentalCarHandler = addRentalCarHandler;
         }
 
         /// <summary>
@@ -61,7 +65,6 @@ namespace CarRentalCo.Administration.API.Controllers
         /// <response code="200">Data</response>
         /// <response code="400"></response>
         [HttpPost]
-        [ProducesResponseType(typeof(CompanyDto), StatusCodes.Status200OK)]
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> AddCompany([FromBody] CreateCompanyRequest request)
         {
@@ -80,12 +83,29 @@ namespace CarRentalCo.Administration.API.Controllers
         /// <response code="400"></response>
         [HttpPost]
         [Route("agency")]
-        [ProducesResponseType(typeof(CompanyDto), StatusCodes.Status200OK)]
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> AddCompanyAgency([FromBody] AddCompanyAgencyRequest request)
         {
             await addCompanyAgencyHandler.HandleAsync(new AddCompanyAgencyCommand(new CompanyId(request.CompanyId), new AgencyId(request.AgencyId),
                 new AddCompanyAgencyCommand.AddCompanyAgencyAdressModel(request.Street, request.Number, request.City, request.PostalCode, request.Country)));
+
+            return Ok(request.CompanyId);
+        }
+
+        /// <summary>
+        /// Add company agency
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <response code="200">Data</response>
+        /// <response code="400"></response>
+        [HttpPost]
+        [Route("agencyRentalCar")]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> AddAgencyRentalCar([FromBody] AddAgencyRentalCarRequest request)
+        {
+            await addRentalCarHandler.HandleAsync(new AddAgencyRentalCarCommand(new CompanyId(request.CompanyId), new AgencyId(request.AgencyId),
+                new Domain.RentalCars.RentalCarId(request.RentalCarId)));
 
             return Ok(request.CompanyId);
         }

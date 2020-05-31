@@ -12,8 +12,10 @@ namespace CarRentalCo.Administration.Domain.RentalCars
 
         private RentalCarSpecification() { }
 
-        private RentalCarSpecification(string brand, string model, DateTime productionDate, Colour colour)
+        public RentalCarSpecification(string brand, string model, DateTime productionDate, Colour colour)
         {
+            //todo perform validations
+
             this.Brand = brand;
             this.Model = model;
             this.ProductionDate = productionDate;
@@ -22,8 +24,6 @@ namespace CarRentalCo.Administration.Domain.RentalCars
 
         public static RentalCarSpecification Create(string brand, string model, DateTime productionDate, Colour colour)
         {
-            //todo perform validations
-
             return new RentalCarSpecification(brand, model, productionDate, colour);
         }
 
