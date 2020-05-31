@@ -6,7 +6,7 @@ namespace CarRentalCo.Administration.Infrastructure.Mappings
     public static class OwnerDocumentMappings
     {
         public static Owner ToAggregate(this OwnerDocument doc)
-            => Owner.Create(new OwnerId(doc.Id), doc.FullName, doc.Email, doc.DateOfBirth);
+            => new Owner(new OwnerId(doc.Id), doc.FullName, doc.Email, doc.DateOfBirth, doc.CreationDate);
 
         public static OwnerDocument ToDocument(this Owner owner)
             => new OwnerDocument

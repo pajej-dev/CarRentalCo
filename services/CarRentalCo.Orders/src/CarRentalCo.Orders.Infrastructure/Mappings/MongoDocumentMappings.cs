@@ -1,19 +1,19 @@
-﻿using AutoMapper;
-using CarRentalCo.Orders.Application.Orders.Dtos;
+﻿using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Domain.Customers;
 using CarRentalCo.Orders.Domain.Orders;
 using CarRentalCo.Orders.Infrastructure.Mongo.Customers;
 using CarRentalCo.Orders.Infrastructure.Mongo.Orders;
 using System.Linq;
 using CustomerId = CarRentalCo.Orders.Domain.Orders.CustomerId;
+using OrderStatus = CarRentalCo.Orders.Domain.Orders.OrderStatus;
 
 namespace CarRentalCo.Orders.Infrastructure.Mappings
 {
     public static class MongoDocumentMappings
     {
         public static Order ToAggregate(this OrderDocument orderDocument)
-            => Order.Create(new OrderId(orderDocument.Id), new CustomerId(orderDocument.CustomerId), orderDocument.CreatedAt,
-                     orderDocument.OrderCars.Select(car => OrderCar.Create(new OrderCarId(car.Id), new RentalCarId(car.RentalCarId),
+            => new Order(new OrderId(orderDocument.Id), new CustomerId(orderDocument.CustomerId), orderDocument.CreatedAt, (OrderStatus)orderDocument.OrderStatus,
+                     orderDocument.OrderCars.Select(car => new OrderCar(new OrderCarId(car.Id), new RentalCarId(car.RentalCarId),
                         car.PricePerDay, car.RentalStartDate, car.RentalEndDate)).ToList());
 
         public static OrderDto ToDto(this OrderDocument orderDocument)
@@ -54,7 +54,8 @@ namespace CarRentalCo.Orders.Infrastructure.Mappings
         };
 
         public static Customer ToAggregate(this CustomerDocument customerDocument)
-            => Customer.Create(new Domain.Customers.CustomerId(customerDocument.Id), customerDocument.FullName, customerDocument.Email, customerDocument.DateOfBirth);
+            => new Customer(new Domain.Customers.CustomerId(customerDocument.Id), customerDocument.FullName,
+                   customerDocument.Email, customerDocument.DateOfBirth, customerDocument.CreationDate);
 
         public static CustomerDocument ToDocument(this Customer customer)
         => new CustomerDocument

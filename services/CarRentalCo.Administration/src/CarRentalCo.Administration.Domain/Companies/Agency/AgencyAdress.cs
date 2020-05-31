@@ -12,19 +12,7 @@ namespace CarRentalCo.Administration.Domain.Companies
         public string Country { get; private set; }
 
 
-        private AgencyAdress()
-        {
-        }
-        private AgencyAdress(string street, int number, string city, string postalCode, string country)
-        {
-            this.Street = street;
-            this.Number = number;
-            this.City = city;
-            this.PostalCode = postalCode;
-            this.Country = country;
-        }
-
-        public static AgencyAdress Create(string street, int number, string city, string postalCode, string country)
+        public AgencyAdress(string street, int number, string city, string postalCode, string country)
         {
             //todo extract validators and validate postal code 
             if (string.IsNullOrWhiteSpace(street))
@@ -42,6 +30,16 @@ namespace CarRentalCo.Administration.Domain.Companies
             if (string.IsNullOrWhiteSpace(country))
                 throw new InvalidAgencyAdressParameterException(nameof(country));
 
+
+            this.Street = street;
+            this.Number = number;
+            this.City = city;
+            this.PostalCode = postalCode;
+            this.Country = country;
+        }
+
+        public static AgencyAdress Create(string street, int number, string city, string postalCode, string country)
+        {
             return new AgencyAdress(street, number, city, postalCode, country);
         }
 

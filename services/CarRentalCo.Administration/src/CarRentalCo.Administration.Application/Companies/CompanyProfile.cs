@@ -2,13 +2,15 @@
 using CarRentalCo.Administration.Application.Companies.Dtos;
 using CarRentalCo.Administration.Domain.Companies;
 using System.Linq;
+using static CarRentalCo.Administration.Application.Companies.Features.AddCompanyAgency.AddCompanyAgencyCommand;
 
 namespace CarRentalCo.Administration.Application.Companies
 {
-    public class CompaniesProfile : Profile
+    public class CompanyProfile : Profile
     {
-        public CompaniesProfile()
+        public CompanyProfile()
         {
+            //domain => dto
             CreateMap<AgencyAdress, AgencyAdressDto>();
             CreateMap<Agency, AgencyDto>()
                 .ForMember(x => x.Id, src => src.MapFrom(s => s.Id.Value))
@@ -19,7 +21,10 @@ namespace CarRentalCo.Administration.Application.Companies
             CreateMap<Company, CompanyDto>()
                 .ForMember(x => x.Id, src => src.MapFrom(s => s.Id.Value))
                 .ForMember(x => x.OwnerId, src => src.MapFrom(s => s.OwnerId.Value));
-                
+
+            //command => domain
+            CreateMap<AddCompanyAgencyAdressModel, AgencyAdress>().ConstructUsing(ctor => AgencyAdress.Create(ctor.Street, ctor.Number,
+                ctor.City, ctor.PostalCode, ctor.Country));
         }
     }
 }

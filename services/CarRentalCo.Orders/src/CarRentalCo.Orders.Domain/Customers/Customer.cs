@@ -14,22 +14,21 @@ namespace CarRentalCo.Orders.Domain.Customers
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
 
-        private Customer() { }
-
-        private Customer(CustomerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
+        public  Customer(CustomerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
         {
-            this.Id =id;
+            this.Id = id;
             this.FullName = fullName;
             this.Email = email;
             this.DateOfBirth = dateOfBirth;
             this.CreationDate = creationDate;
-
-            AddDomainEvent(new CustomerCreatedDomainEvent(Id));
         }
 
         public static Customer Create(CustomerId id, string fullName, string email, DateTime dateOfBirth)
         {
-            return new Customer(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
+            var customer = new Customer(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
+            customer.AddDomainEvent(new CustomerCreatedDomainEvent(id));
+
+            return customer;
         }
     }
 }

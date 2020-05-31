@@ -8,8 +8,15 @@ namespace CarRentalCo.Administration.Infrastructure.Mappings
     public static class CompanyDocumentMappings
     {
         public static Company ToAggregate(this CompanyDocument companyDocument)
-            => Company.Create(new CompanyId(companyDocument.Id), new OwnerId(companyDocument.OwnerId), companyDocument.Name,
-                companyDocument.SetUpDate, CompanyContact.Create(companyDocument.CompanyContact.Email, companyDocument.CompanyContact.Phone));
+            => new Company(new CompanyId(companyDocument.Id), new OwnerId(companyDocument.OwnerId), companyDocument.Name,
+                companyDocument.SetUpDate, CompanyContact.Create(companyDocument.CompanyContact.Email, companyDocument.CompanyContact.Phone),
+                companyDocument.Agencies.Select(ag => ag.ToEntity()).ToList());
+
+        public static Agency ToEntity(this AgencyDocument doc)
+            => new Agency(new AgencyId(doc.Id),
+                new AgencyAdress(doc.Adress.Street, doc.Adress.Number, doc.Adress.City, doc.Adress.PostalCode, doc.Adress.Country),
+                (AgencyRole)doc.Role, doc.RoleAssignDate, doc.SetUpDate, doc.RentalCars.Select(x => new Domain.RentalCars.RentalCarId(x)).ToList());
+
 
         public static CompanyDocument ToDocument(this Company company)
             => new CompanyDocument

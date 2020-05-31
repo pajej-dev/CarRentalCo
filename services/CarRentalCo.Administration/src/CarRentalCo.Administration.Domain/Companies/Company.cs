@@ -18,30 +18,25 @@ namespace CarRentalCo.Administration.Domain.Companies
         public DateTime SetUpDate { get; private set; }
         public CompanyContact CompanyContact { get; private set; }
 
-        private Company()
-        {
-            this.Agencies = new List<Agency>();
-        }
-
-        private Company(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact)
+        public Company(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact, IList<Agency> agencies = null)
         {
             this.Id = id;
             this.OwnerId = ownerId;
             this.SetUpDate = setUpDate;
             this.CompanyContact = companyContact;
             this.Name = name;
-            this.Agencies = new List<Agency>();
-
-            AddDomainEvent(new CompanyCreatedDomainEvent(Id, OwnerId));
+            this.Agencies = agencies ?? new List<Agency>();
         }
 
         public static Company Create(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact)
         {
+            var company = new Company(id, ownerId, name, setUpDate, companyContact);
+            company.AddDomainEvent(new CompanyCreatedDomainEvent(id, ownerId));
 
-            return new Company(id, ownerId, name, setUpDate, companyContact);
+            return company;
         }
 
-        public void AddCompanyAgency(AgencyId agencyId)
+        public void AddCompanyAgency(AgencyId agencyId, AgencyAdress adress)
         {
             if (Agencies.Count == 10)
                 throw new AddCompanyAgencyRejectedException("Company cannot contains more than 10 Agencies");
@@ -53,7 +48,7 @@ namespace CarRentalCo.Administration.Domain.Companies
             else
                 role = AgencyRole.Standard;
 
-            Agencies.Add(Agency.Create(agencyId, role));
+            Agencies.Add(Agency.Create(agencyId,adress, role));
             AddDomainEvent(new AgencyAddedDomainEvent(agencyId, Id));
         }
 

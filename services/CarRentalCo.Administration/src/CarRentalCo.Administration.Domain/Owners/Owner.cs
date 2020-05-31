@@ -14,24 +14,21 @@ namespace CarRentalCo.Administration.Domain.Owners
         public DateTime CreationDate { get; private set; }
         public DateTime ModificationDate { get; private set; }
 
-        private Owner()
-        {
-        }
-
-        private Owner(OwnerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
+        public Owner(OwnerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
         {
             Id = id;
             FullName = fullName;
             Email = email;
             DateOfBirth = dateOfBirth;
             CreationDate = creationDate;
-
-            AddDomainEvent(new OwnerCreatedDomainEvent(Id));
         }
 
         public static Owner Create(OwnerId id, string fullName, string email, DateTime dateOfBirth)
         {
-            return new Owner(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
+            var owner = new Owner(id, fullName, email, dateOfBirth, SystemTime.UtcNow);
+            owner.AddDomainEvent(new OwnerCreatedDomainEvent(id));
+
+            return owner;
         }
     }
 }

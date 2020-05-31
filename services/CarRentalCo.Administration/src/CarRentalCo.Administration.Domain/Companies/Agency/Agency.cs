@@ -19,24 +19,21 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         //todo employers
 
-        private Agency()
+        public  Agency(AgencyId agencyId, AgencyAdress adress, AgencyRole agencyRole, DateTime roleAssignDate, DateTime setUpDate, IList<RentalCarId> rentalCars = null)
         {
-        }
-
-        private Agency(AgencyId companyLocationId, AgencyRole companyLocationRole, DateTime roleAssignDate, DateTime setUpDate)
-        {
-            Id = companyLocationId;
-            Role = companyLocationRole;
+            Id = agencyId;
+            Adress = adress;
+            Role = agencyRole;
             RoleAssignDate = roleAssignDate;
             SetUpDate = SetUpDate;
-            RentalCars = new List<RentalCarId>();
+            RentalCars = rentalCars ?? new List<RentalCarId>();
         }
 
-        public static Agency Create(AgencyId companyLocationId, AgencyRole companyLocationRole)
+        public static Agency Create(AgencyId agencyId, AgencyAdress adress, AgencyRole agencyRole)
         {
             //todo val
             var currentDate = SystemTime.UtcNow;
-            return new Agency(companyLocationId, companyLocationRole, currentDate, currentDate);
+            return new Agency(agencyId, adress, agencyRole, currentDate, currentDate);
         }
 
         public void ChangeRoleToStandard()

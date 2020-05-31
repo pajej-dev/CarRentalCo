@@ -17,14 +17,19 @@ namespace CarRentalCo.Orders.Domain.Orders
         public OrderStatus OrderStatus { get; private set; }
         public long TotalDays { get; private set; }
 
-        private Order()
+        public Order(OrderId id, CustomerId customerId, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
         {
-            this.OrderCars = new List<OrderCar>();
+            var groupedOrderCars = orderCars.GroupBy(x => x.RentalCarId);
+            if (groupedOrderCars?.Any(x => x.Count() > 1) ?? false)
+            {
+                throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
+            }
 
-        }
+            if (orderCars.Sum(x => (long)Math.Round(x.RentalEndDate.Subtract(x.RentalStartDate).TotalDays)) > 20)
+            {
+                throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
+            }
 
-        private Order(OrderId id, CustomerId customerId, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
-        {
             Id = id;
             CustomerId = customerId;
             this.OrderCars = orderCars ?? new List<OrderCar>();
@@ -32,8 +37,6 @@ namespace CarRentalCo.Orders.Domain.Orders
             this.OrderStatus = orderStatus;
             this.CalculateTotalDays();
             this.CalculateTotalPrice();
-
-            AddDomainEvent(new OrderCreatedDomainEvent(Id, customerId));
         }
 
         private void CalculateTotalPrice()
@@ -63,18 +66,10 @@ namespace CarRentalCo.Orders.Domain.Orders
 
         public static Order Create(OrderId id, CustomerId customerId, DateTime createdAt, IList<OrderCar> orderCars = null)
         {
-            var groupedOrderCars = orderCars.GroupBy(x => x.RentalCarId);
-            if (groupedOrderCars?.Any(x => x.Count() > 1) ?? false)
-            {
-                throw new OrderCannotContainsDuplicateRentalCarsException("Cannot create order with duplicate rental cars");
-            }
+            var order = new Order(id, customerId, createdAt, OrderStatus.New, orderCars);
+            order.AddDomainEvent(new OrderCreatedDomainEvent(id, customerId));
 
-            if(orderCars.Sum(x => (long)Math.Round(x.RentalEndDate.Subtract(x.RentalStartDate).TotalDays)) > 20)
-            {
-                throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
-            }
-
-            return new Order(id, customerId, createdAt, OrderStatus.New, orderCars);
+            return order;
         }
 
         public void AddOrderCar(RentalCarId rentalCarId, double pricePerDay, DateTime rentalStartDate, DateTime rentalEndDate)
