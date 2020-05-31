@@ -1,7 +1,5 @@
 ﻿using CarRentalCo.Administration.Domain.Companies;
 using CarRentalCo.Administration.Domain.Owners;
-using CarRentalCo.Administration.Domain.RentalCars;
-using CarRentalCo.Common.Application.Contracts;
 using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Common.Other;
 using System;
@@ -22,25 +20,15 @@ namespace CarRentalCo.Administration.Application.Companies.Features.CreateCompan
 
         public async Task HandleAsync(CreateCompanyCommand command, Guid correlationId = default)
         {
-            var owner = ownerRepository.GetByIdAsync(new OwnerId(command.OwnerId));
-            if(owner == null)
+            var ownerExists = await ownerRepository.ExistsAsync(command.OwnerId);
+            if (!ownerExists)
             {
                 throw new Exception("Cannot create company. OwnerId not exists"); //todo app exception
             }
 
             var companyContact = CompanyContact.Create(command.Email, command.Phone);
-            var company = Company.Create(new CompanyId(command.CompanyId), new OwnerId(command.OwnerId), command.Name, SystemTime.UtcNow, companyContact);
+            var company = Company.Create(command.Id, command.OwnerId, command.Name, SystemTime.UtcNow, companyContact);
             await companyRepository.AddAsync(company);
-            //commit
         }
-    }
-
-    public class CreateCompanyCommand : ICommand
-    {
-        public Guid CompanyId { get; private set; }
-        public Guid OwnerId { get; private set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using CustomerId = CarRentalCo.Orders.Domain.Orders.CustomerId;
 
 namespace CarRentalCo.Orders.Infrastructure.Mappings
 {
-    public static class MongoDocumentMappingExtensions
+    public static class MongoDocumentMappings
     {
         public static Order ToAggregate(this OrderDocument orderDocument)
             => Order.Create(new OrderId(orderDocument.Id), new CustomerId(orderDocument.CustomerId), orderDocument.CreatedAt,

@@ -13,25 +13,24 @@ namespace CarRentalCo.Administration.Domain.Companies
     {
         public CompanyId Id { get; private set; }
         public OwnerId OwnerId { get; private set; }
-        public IList<Agency> Agencies => agencies;
-
-        private string name;
-        private DateTime setUpDate;
-        private CompanyContact companyContact;
-        private IList<Agency> agencies;
+        public IList<Agency> Agencies { get; private set; }
+        public string Name { get; private set; }
+        public DateTime SetUpDate { get; private set; }
+        public CompanyContact CompanyContact { get; private set; }
 
         private Company()
         {
-            this.agencies = new List<Agency>();
+            this.Agencies = new List<Agency>();
         }
 
         private Company(CompanyId id, OwnerId ownerId, string name, DateTime setUpDate, CompanyContact companyContact)
         {
             this.Id = id;
             this.OwnerId = ownerId;
-            this.setUpDate = setUpDate;
-            this.companyContact = companyContact;
-            this.agencies = new List<Agency>();
+            this.SetUpDate = setUpDate;
+            this.CompanyContact = companyContact;
+            this.Name = name;
+            this.Agencies = new List<Agency>();
 
             AddDomainEvent(new CompanyCreatedDomainEvent(Id, OwnerId));
         }
@@ -44,34 +43,34 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         public void AddCompanyAgency(AgencyId agencyId)
         {
-            if (agencies.Count == 10)
+            if (Agencies.Count == 10)
                 throw new AddCompanyAgencyRejectedException("Company cannot contains more than 10 Agencies");
 
             AgencyRole role;
 
-            if (agencies.Count == 0)
+            if (Agencies.Count == 0)
                 role = AgencyRole.Headquarter;
             else
                 role = AgencyRole.Standard;
 
-            agencies.Add(Agency.Create(agencyId, role));
+            Agencies.Add(Agency.Create(agencyId, role));
             AddDomainEvent(new AgencyAddedDomainEvent(agencyId, Id));
         }
 
         public void ChangeContact(CompanyContact companyContact)
         {
-            this.companyContact = companyContact;
+            this.CompanyContact = companyContact;
         }
 
         public void ChangeCompanyHeadquarter(AgencyId newHeadquarterId)
         {
-            if (agencies.Count == 0)
+            if (Agencies.Count == 0)
                 throw new ChangeCompanyHeadquarterRejectedException("Company headquarter cannot be changed. Company does not contain any agency");
 
-            var currentHQ = agencies.First(x => x.Role == AgencyRole.Headquarter);
+            var currentHQ = Agencies.First(x => x.Role == AgencyRole.Headquarter);
             currentHQ.ChangeRoleToStandard();
 
-            var newHQ = agencies.FirstOrDefault(x => x.Id == newHeadquarterId);
+            var newHQ = Agencies.FirstOrDefault(x => x.Id == newHeadquarterId);
             if (newHQ == null)
                 throw new ChangeCompanyHeadquarterRejectedException($"Company headquarter cannot be changed. " +
                     $"Provided '{nameof(AgencyId)}': {newHeadquarterId} not exists in a company");
@@ -81,7 +80,7 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         public void AddAgencyRentalCar(AgencyId agencyId, RentalCarId rentalCarId)
         {
-            var agency = agencies.FirstOrDefault(x => x.Id == agencyId);
+            var agency = Agencies.FirstOrDefault(x => x.Id == agencyId);
 
             if (agency == null)
                 throw new AgencyNotFoundException($"Unable to add rental car. AgencyId: {agencyId} does not exists" +

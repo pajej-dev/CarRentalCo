@@ -5,15 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="RentalCars\" />
+    <Folder Include="Mongo\RentalCars\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj" />
     <ProjectReference Include="..\CarRentalCo.Administration.Domain\CarRentalCo.Administration.Domain.csproj" />
   </ItemGroup>
 

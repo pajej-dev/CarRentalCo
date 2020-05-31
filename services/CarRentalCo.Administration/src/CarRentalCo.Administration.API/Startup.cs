@@ -1,19 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using CarRentalCo.Administration.API.Extensions;
+using CarRentalCo.Administration.Application.Companies.Dtos;
+using CarRentalCo.Administration.Domain.Companies;
+using CarRentalCo.Administration.Infrastructure.Mongo.Companies;
 using CarRentalCo.Common.Middlewares;
-using CarRentalCo.Orders.API.Extensions;
-using CarRentalCo.Orders.Application.Orders.Clients;
-using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
-using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
-using CarRentalCo.Orders.Infrastructure.Clients;
-using CarRentalCo.Orders.Infrastructure.Services;
 using CorrelationId;
 using CorrelationId.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CarRentalCo.Orders.API
+namespace CarRentalCo.Administration.API
 {
     public class Startup
     {
@@ -40,12 +44,12 @@ namespace CarRentalCo.Orders.API
             services.AddControllers();
             services.AddLogging();
             services.AddDefaultCorrelationId();
-            services.AddTransient<IGetOrdersService, GetOrdersService>();
-            services.AddTransient<IGetCustomerOrdersService, GetCustomerOrdersService>();
-            services.AddTransient<IRentalCarClient, RentalCarClient>();
-            services.AddOrdersMongo(Configuration);
+            services.AddCompanyMongo(Configuration);
             services.AddSwagger();
             services.AddScrutorScan();
+            services.AddAutoMapper(typeof(CompanyDto).Assembly,
+                typeof(CompanyDocument).Assembly);
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,7 +64,7 @@ namespace CarRentalCo.Orders.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarRentalCo.Orders V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarRentalCo.Administration V1");
             });
 
             app.UseRouting();
