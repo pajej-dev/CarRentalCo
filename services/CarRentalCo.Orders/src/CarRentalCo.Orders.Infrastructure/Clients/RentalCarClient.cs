@@ -1,30 +1,63 @@
 ﻿using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
+using CarRentalCo.Orders.Application.Settings;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CarRentalCo.Orders.Infrastructure.Clients
 {
+    //todo refactor
     public class RentalCarClient : IRentalCarClient
     {
-        public RentalCarClient()
+        private readonly RentalCarClientSettings settings;
+        HttpClient httpClient;
+        public RentalCarClient(IHttpClientFactory httpClientFactory, RentalCarClientSettings settings )
         {
-
+            this.settings = settings;
+            httpClient = httpClientFactory.CreateClient(nameof(RentalCarClient));
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1");
         }
+
 
         public async Task<RentalCarDto> GetByIdAsync(Guid id)
         {
-            return await Task.FromResult(new RentalCarDto { Id = id, PricePerDay = 25, Brand = "Toyota", Model = "Yaris" });
+            var uri = new Uri($"{settings.BasePath}/{settings.RentalCarEndpoint}/{id}");
+
+            var response = await httpClient.GetAsync(uri);
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RentalCarDto>(json);
+
+            return result;
         }
 
         public async Task<ICollection<RentalCarDto>> GetByIdsAsync(Guid[] ids)
         {
-            //todo mocks
-            var rentalCars = ids.Select(x => new RentalCarDto { Id = x, PricePerDay = 25, Brand = "Toyota", Model = "Yaris" }).ToList();
+            var uri = new Uri($"{settings.BasePath}/{settings.RentalCarEndpoint}");
 
-            return await Task.FromResult(rentalCars);
+            var request = new HttpRequestMessage();
+            var body = JsonConvert.SerializeObject(new RentalCarBody { RentalCarIds = ids });
+            request.Content = new StringContent(body,Encoding.UTF8, "application/json");
+            request.RequestUri = uri;
+            request.Method = HttpMethod.Get;
+            
+
+            var response = await httpClient.SendAsync(request);
+            var json =  await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ICollection<RentalCarDto>>(json);
+
+            return result;
+        }
+
+        class RentalCarBody
+        {
+            public Guid[] RentalCarIds { get; set; }
         }
     }
 }

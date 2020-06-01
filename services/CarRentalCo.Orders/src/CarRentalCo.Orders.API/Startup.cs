@@ -47,6 +47,8 @@ namespace CarRentalCo.Orders.API
             services.AddSwagger();
             services.AddScrutorScan();
             services.AddHealthChecks();
+            services.AddSettings(Configuration);
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,7 +1,9 @@
 using AutoMapper;
 using CarRentalCo.Administration.API.Extensions;
 using CarRentalCo.Administration.Application.Companies.Dtos;
+using CarRentalCo.Administration.Application.RentalCars.Features.GetRentalCars;
 using CarRentalCo.Administration.Infrastructure.Mongo.Companies;
+using CarRentalCo.Administration.Infrastructure.Services;
 using CarRentalCo.Common.Middlewares;
 using CorrelationId;
 using CorrelationId.DependencyInjection;
@@ -42,6 +44,7 @@ namespace CarRentalCo.Administration.API
             services.AddSwagger();
             services.AddScrutorScan();
             services.AddHealthChecks();
+            services.AddTransient<IGetRentalCarsService,GetRentalCarsService>();
             services.AddAutoMapper(typeof(CompanyDto).Assembly,
                 typeof(CompanyDocument).Assembly);
 

@@ -25,6 +25,7 @@ namespace CarRentalCo.Orders.Application.Orders.Features.AddOrderCar
                 throw new Exception("Cannot Add order car. OrderId not found");
             }
 
+            //get rentalCar to check if exists and get prices
             var rentalCar = await rentalCarClient.GetByIdAsync(command.RentalCarId);
             if(rentalCar == null)
             {

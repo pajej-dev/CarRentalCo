@@ -2,7 +2,7 @@
 using CarRentalCo.Common.Application.Contracts;
 using System;
 
-namespace CarRentalCo.Administration.Application.RentalCars.CreateRentalCar
+namespace CarRentalCo.Administration.Application.RentalCars.Features.CreateRentalCar
 {
     public class CreateRentalCarCommand : ICommand
     {

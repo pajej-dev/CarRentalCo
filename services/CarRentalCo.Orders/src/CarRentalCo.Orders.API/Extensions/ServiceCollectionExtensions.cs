@@ -2,6 +2,7 @@
 using CarRentalCo.Common.Domain;
 using CarRentalCo.Common.Infrastructure.Mongo;
 using CarRentalCo.Orders.Application.Orders.Dtos;
+using CarRentalCo.Orders.Application.Settings;
 using CarRentalCo.Orders.Infrastructure.Mongo.Customers;
 using CarRentalCo.Orders.Infrastructure.Mongo.Orders;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,12 @@ namespace CarRentalCo.Orders.API.Extensions
             services.AddMongo(configuration);
             services.AddMongoRepository<OrderDocument>("orders");
             services.AddMongoRepository<CustomerDocument>("customers");
+        }
+
+        public static void AddSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            var rentalCarClientSettings = configuration.GetSection("RentalCarClientSettings").Get<RentalCarClientSettings>();
+            services.AddSingleton<RentalCarClientSettings>(rentalCarClientSettings);
         }
 
         public static void AddSwagger(this IServiceCollection services)

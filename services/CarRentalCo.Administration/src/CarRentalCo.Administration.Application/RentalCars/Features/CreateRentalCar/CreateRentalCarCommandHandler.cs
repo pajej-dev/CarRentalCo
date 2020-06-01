@@ -1,10 +1,9 @@
 ﻿using CarRentalCo.Administration.Domain.RentalCars;
 using CarRentalCo.Common.Application.Handlers;
-using MongoDB.Bson;
 using System;
 using System.Threading.Tasks;
 
-namespace CarRentalCo.Administration.Application.RentalCars.CreateRentalCar
+namespace CarRentalCo.Administration.Application.RentalCars.Features.CreateRentalCar
 {
     public class CreateRentalCarCommandHandler : ICommandHandler<CreateRentalCarCommand>
     {

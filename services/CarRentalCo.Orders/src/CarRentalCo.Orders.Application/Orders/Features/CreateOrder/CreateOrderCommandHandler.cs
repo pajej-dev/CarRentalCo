@@ -26,7 +26,7 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
 
         public async Task HandleAsync(CreateOrderCommand command, Guid correlationId = default)
         {
-            //todo get rentalCarIds to check if exists and get prices
+            //get rentalCarIds to check if exists and get prices
             var rentalCars = await rentalCarClient.GetByIdsAsync(command.OrderCars.Select(c => c.RentalCarId).ToArray());
 
             var customer = await customerRepository.GetByIdAsync(new Domain.Customers.CustomerId(command.CustomerId));
