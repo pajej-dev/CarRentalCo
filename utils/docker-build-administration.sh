@@ -1,0 +1,1 @@
+docker build -t carrentalco-administration:develop ../services/CarRentalCo.Administration/

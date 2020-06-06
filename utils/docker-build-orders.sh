@@ -1,0 +1,1 @@
+docker build -t carrentalco-orders:develop ../services/CarRentalCo.Orders/ 

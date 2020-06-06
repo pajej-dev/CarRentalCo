@@ -9,9 +9,12 @@ using CorrelationId;
 using CorrelationId.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
+using System.Net;
 
 namespace CarRentalCo.Orders.API
 {
@@ -64,13 +67,21 @@ namespace CarRentalCo.Orders.API
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarRentalCo.Orders V1");
+                c.RoutePrefix = "ordersApi/swagger";
             });
 
             app.UseRouting();
             app.UseEndpoints(endpoints => 
             { 
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
+                endpoints.MapHealthChecks("ordersApi/health");
+                endpoints.MapGet("ordersApi/info", async req =>
+                {
+                    var adresses = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+                    string text = $"Service : CarrentalCo.Orders |  Ips: {string.Join(';', adresses.Select(x => x.ToString()))}";
+
+                    await req.Response.WriteAsync(text);
+                });
             });
         }
     }

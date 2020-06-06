@@ -15,7 +15,7 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace CarRentalCo.Administration.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("administrationApi/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {

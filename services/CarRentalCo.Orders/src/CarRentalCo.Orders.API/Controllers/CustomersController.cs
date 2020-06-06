@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using CarRentalCo.Common.Application.Handlers;
+﻿using CarRentalCo.Common.Application.Handlers;
 using CarRentalCo.Orders.Application.Customers.Dtos;
 using CarRentalCo.Orders.Application.Customers.Features.GetCustomer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace CarRentalCo.Orders.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("ordersApi/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -36,7 +34,7 @@ namespace CarRentalCo.Orders.API.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> GetOrder([FromRoute] Guid customerId)
         {
-            var result = await getCustomerQueryHandler.HandleAsync(new GetCustomerQuery { CustomerId = customerId});
+            var result = await getCustomerQueryHandler.HandleAsync(new GetCustomerQuery { CustomerId = customerId });
 
             if (result == null)
                 return NotFound();

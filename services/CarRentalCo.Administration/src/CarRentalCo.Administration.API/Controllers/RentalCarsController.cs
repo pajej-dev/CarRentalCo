@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CarRentalCo.Administration.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("administrationApi/[controller]")]
     [ApiController]
     public class RentalCarsController : ControllerBase
     {

@@ -39,7 +39,7 @@ namespace CarRentalCo.Orders.Application.Orders.Features.CreateOrder
                 var rentalCars = await rentalCarClient.GetByIdsAsync(command.OrderCars.Select(c => c.RentalCarId).ToArray());
                 if (rentalCars == null)
                 {
-                    throw new Exception("Cannot create order. Customer not exists."); //todo create application exceptions
+                    throw new Exception("Cannot create order. RentalCarId not found."); //todo create application exceptions
                 }
 
                 //match prices to orderCars

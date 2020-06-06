@@ -12,12 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace CarRentalCo.Orders.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("ordersApi/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -84,6 +85,7 @@ namespace CarRentalCo.Orders.API.Controllers
 
             return Ok(result);
         }
+
 
 
         /// <summary>

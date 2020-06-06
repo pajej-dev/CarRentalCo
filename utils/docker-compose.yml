@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   carrentalco-administration:
-    image: carrentalco-administration:v2
+    image: carrentalco-administration:develop
     ports: 
       - 8001:8001
     networks: 
@@ -15,7 +15,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
 
   carrentalco-orders:
-    image: carrentalco-orders:v2
+    image: carrentalco-orders:develop
     ports: 
       - 8002:8002
     networks: 
