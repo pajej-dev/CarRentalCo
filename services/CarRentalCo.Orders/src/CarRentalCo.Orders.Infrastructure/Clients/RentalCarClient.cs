@@ -1,6 +1,7 @@
 ﻿using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Application.Settings;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace CarRentalCo.Orders.Infrastructure.Clients
             var uri = new Uri($"{settings.BasePath}/{settings.RentalCarEndpoint}/{id}");
 
             var response = await httpClient.GetAsync(uri);
+
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return default;
+            }
+
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RentalCarDto>(json);
 
@@ -47,8 +54,13 @@ namespace CarRentalCo.Orders.Infrastructure.Clients
             request.RequestUri = uri;
             request.Method = HttpMethod.Get;
             
-
             var response = await httpClient.SendAsync(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return default;
+            }
+
             var json =  await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ICollection<RentalCarDto>>(json);
 
