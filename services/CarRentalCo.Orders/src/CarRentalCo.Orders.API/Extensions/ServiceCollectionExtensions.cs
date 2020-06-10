@@ -24,6 +24,10 @@ namespace CarRentalCo.Orders.API.Extensions
         {
             var rentalCarClientSettings = configuration.GetSection("RentalCarClientSettings").Get<RentalCarClientSettings>();
             services.AddSingleton<RentalCarClientSettings>(rentalCarClientSettings);
+
+            var rentalCarClientPolicySettings = configuration.GetSection("RentalCarClientSettings:RentalCarClientPolicySettings").Get<RentalCarClientPolicySettings>();
+            services.AddSingleton<RentalCarClientPolicySettings>(rentalCarClientPolicySettings);
+
         }
 
         public static void AddSwagger(this IServiceCollection services)

@@ -1,6 +1,7 @@
 ﻿using CarRentalCo.Orders.Application.Orders.Clients;
 using CarRentalCo.Orders.Application.Orders.Dtos;
 using CarRentalCo.Orders.Application.Settings;
+using CarRentalCo.Orders.Infrastructure.Policies;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -17,10 +18,12 @@ namespace CarRentalCo.Orders.Infrastructure.Clients
     public class RentalCarClient : IRentalCarClient
     {
         private readonly RentalCarClientSettings settings;
+        private readonly IRentalCarClientPolicy policy;
         HttpClient httpClient;
-        public RentalCarClient(IHttpClientFactory httpClientFactory, RentalCarClientSettings settings )
+        public RentalCarClient(IHttpClientFactory httpClientFactory, RentalCarClientSettings settings, IRentalCarClientPolicy policy)
         {
             this.settings = settings;
+            this.policy = policy;
             httpClient = httpClientFactory.CreateClient(nameof(RentalCarClient));
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1");
@@ -31,14 +34,14 @@ namespace CarRentalCo.Orders.Infrastructure.Clients
         {
             var uri = new Uri($"{settings.BasePath}/{settings.RentalCarEndpoint}/{id}");
 
-            var response = await httpClient.GetAsync(uri);
+            var response = await policy.Policy.ExecuteAndCaptureAsync(async () => await httpClient.GetAsync(uri));
 
-            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            if(response.Outcome == Polly.OutcomeType.Failure || response.Result.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 return default;
             }
 
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await response.Result.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RentalCarDto>(json);
 
             return result;

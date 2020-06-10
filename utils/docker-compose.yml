@@ -27,8 +27,8 @@ services:
       - mongo:connectionString=mongodb://mongo:27017
       - ASPNETCORE_ENVIRONMENT=Production
       - RentalCarClientSettings:BasePath=http://carrentalco-administration:8001
-      - RentalCarClientSettings:RentalCarEndpoint=api/RentalCars
-      - RentalCarClientSettings:RentalCarsEndpoint=api/RentalCars
+      - RentalCarClientSettings:RentalCarEndpoint=administrationApi/RentalCars
+      - RentalCarClientSettings:RentalCarsEndpoint=administrationApi/RentalCars
 
 
   mongo:

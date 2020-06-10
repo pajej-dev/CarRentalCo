@@ -5,6 +5,7 @@ using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrderDetails;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
 using CarRentalCo.Orders.Infrastructure.Clients;
+using CarRentalCo.Orders.Infrastructure.Policies;
 using CarRentalCo.Orders.Infrastructure.Services;
 using CorrelationId;
 using CorrelationId.DependencyInjection;
@@ -48,6 +49,7 @@ namespace CarRentalCo.Orders.API
             services.AddTransient<IGetCustomerOrdersService, GetCustomerOrdersService>();
             services.AddTransient<IGetOrderCarDetailsService, GetOrderCarDetailsService>();
             services.AddTransient<IRentalCarClient, RentalCarClient>();
+            services.AddSingleton<IRentalCarClientPolicy, RentalCarClientPolicy>();
             services.AddOrdersMongo(Configuration);
             services.AddSwagger();
             services.AddScrutorScan();
