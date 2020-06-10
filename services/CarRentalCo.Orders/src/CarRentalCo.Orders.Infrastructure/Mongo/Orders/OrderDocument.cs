@@ -16,7 +16,7 @@ namespace CarRentalCo.Orders.Infrastructure.Mongo.Orders
 
     }
 
-    public class OrderCarDocument
+    public class OrderCarDocument : IIdentifiable
     {
         public Guid Id { get; set; }
         public Guid RentalCarId { get; set; }

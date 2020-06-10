@@ -6,6 +6,7 @@ using CarRentalCo.Orders.Application.Orders.Features.AddOrderCar;
 using CarRentalCo.Orders.Application.Orders.Features.CreateOrder;
 using CarRentalCo.Orders.Application.Orders.Features.GetCustomerOrders;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrder;
+using CarRentalCo.Orders.Application.Orders.Features.GetOrderDetails;
 using CarRentalCo.Orders.Application.Orders.Features.GetOrders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,14 @@ namespace CarRentalCo.Orders.API.Controllers
         private readonly IQueryHandler<GetCustomerOrdersQuery, PagedResult<OrderDto>> getCustomerOrdersQuery;
         private readonly ICommandHandler<CreateOrderCommand> createOrderCommandHandler;
         private readonly ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler;
+        private readonly IQueryHandler<GetOrderCarDetailsQuery, OrderCarDetailsDto> getOrderCarDetailsHandler;
 
         public OrdersController(IQueryHandler<GetOrdersQuery,PagedResult<OrderDto>> getOrdersQueryHandler,
                 IQueryHandler<GetOrderQuery, OrderDto> getOrderQueryHandler,
                 IQueryHandler<GetCustomerOrdersQuery, PagedResult<OrderDto>> getCustomerOrdersQuery,
                 ICommandHandler<CreateOrderCommand> createOrderCommandHandler,
-                ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler
+                ICommandHandler<AddOrderCarCommand> addOrderCarCommandHandler,
+                IQueryHandler<GetOrderCarDetailsQuery, OrderCarDetailsDto> getOrderCarDetailsHandler
             )
         {
             this.getOrdersQueryHandler = getOrdersQueryHandler;
@@ -40,6 +43,7 @@ namespace CarRentalCo.Orders.API.Controllers
             this.getCustomerOrdersQuery = getCustomerOrdersQuery;
             this.createOrderCommandHandler = createOrderCommandHandler;
             this.addOrderCarCommandHandler = addOrderCarCommandHandler;
+            this.getOrderCarDetailsHandler = getOrderCarDetailsHandler;
         }
 
         /// <summary>
@@ -86,7 +90,27 @@ namespace CarRentalCo.Orders.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get order car details by id
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <response code="200">Data</response>
+        /// <response code="400"></response>
+        /// <response code="404">If no order exists</response>
+        [HttpGet]
+        [Route("orderCar/{orderCarId}")]
+        [ProducesResponseType(typeof(OrderCarDetailsDto), StatusCodes.Status200OK)]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> GetOrderCarDetails([FromRoute] Guid orderCarId)
+        {
+            var result = await getOrderCarDetailsHandler.HandleAsync(new GetOrderCarDetailsQuery { OrderCarId = orderCarId });
 
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
 
         /// <summary>
         /// Get order by id
