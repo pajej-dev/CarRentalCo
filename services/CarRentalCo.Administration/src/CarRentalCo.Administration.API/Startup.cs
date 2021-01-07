@@ -1,4 +1,3 @@
-using AutoMapper;
 using CarRentalCo.Administration.API.Extensions;
 using CarRentalCo.Administration.Application.Companies.Dtos;
 using CarRentalCo.Administration.Application.RentalCars.Features.GetRentalCars;
@@ -48,9 +47,6 @@ namespace CarRentalCo.Administration.API
             services.AddScrutorScan();
             services.AddHealthChecks();
             services.AddTransient<IGetRentalCarsService,GetRentalCarsService>();
-            services.AddAutoMapper(typeof(CompanyDto).Assembly,
-                typeof(CompanyDocument).Assembly);
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -67,7 +63,6 @@ namespace CarRentalCo.Administration.API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarRentalCo.Administration V1");
                 c.RoutePrefix = "administrationApi/swagger";
-
             });
 
             app.UseRouting();

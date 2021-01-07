@@ -19,6 +19,17 @@ namespace CarRentalCo.Orders.Domain.Orders
 
         public Order(OrderId id, CustomerId customerId, DateTime createdAt, OrderStatus orderStatus, IList<OrderCar> orderCars = null)
         {
+            Id = id;
+            CustomerId = customerId;
+            this.OrderCars = orderCars ?? new List<OrderCar>();
+            this.CreatedAt = createdAt;
+            this.OrderStatus = orderStatus;
+            this.CalculateTotalDays();
+            this.CalculateTotalPrice();
+        }
+
+        public static Order Create(OrderId id, CustomerId customerId, DateTime createdAt, IList<OrderCar> orderCars = null)
+        {
             var groupedOrderCars = orderCars.GroupBy(x => x.RentalCarId);
             if (groupedOrderCars?.Any(x => x.Count() > 1) ?? false)
             {
@@ -30,42 +41,6 @@ namespace CarRentalCo.Orders.Domain.Orders
                 throw new OrderTotalDaysExceededException("Order rental cannot be longer than 20 days");
             }
 
-            Id = id;
-            CustomerId = customerId;
-            this.OrderCars = orderCars ?? new List<OrderCar>();
-            this.CreatedAt = createdAt;
-            this.OrderStatus = orderStatus;
-            this.CalculateTotalDays();
-            this.CalculateTotalPrice();
-        }
-
-        private void CalculateTotalPrice()
-        {
-            double price = 0;
-
-            foreach (var item in OrderCars)
-            {
-                price += ((item.RentalEndDate - item.RentalStartDate).TotalDays * item.PricePerDay);
-            }
-
-            this.TotalPrice = price;
-        }
-
-        private void CalculateTotalDays()
-        {
-            long totalDays = 0;
-
-            foreach (var item in OrderCars)
-            {
-                totalDays += (long)Math.Round(item.RentalEndDate.Subtract(item.RentalStartDate).TotalDays);
-            }
-
-            this.TotalDays = totalDays;
-        }
-
-
-        public static Order Create(OrderId id, CustomerId customerId, DateTime createdAt, IList<OrderCar> orderCars = null)
-        {
             var order = new Order(id, customerId, createdAt, OrderStatus.New, orderCars);
             order.AddDomainEvent(new OrderCreatedDomainEvent(id, customerId));
 
@@ -131,6 +106,30 @@ namespace CarRentalCo.Orders.Domain.Orders
 
             OrderStatus = OrderStatus.Finished;
             AddDomainEvent(new OrderFinishedDomainEvent(Id, CustomerId));
+        }
+
+        private void CalculateTotalPrice()
+        {
+            double price = 0;
+
+            foreach (var item in OrderCars)
+            {
+                price += ((item.RentalEndDate - item.RentalStartDate).TotalDays * item.PricePerDay);
+            }
+
+            this.TotalPrice = price;
+        }
+
+        private void CalculateTotalDays()
+        {
+            long totalDays = 0;
+
+            foreach (var item in OrderCars)
+            {
+                totalDays += (long)Math.Round(item.RentalEndDate.Subtract(item.RentalStartDate).TotalDays);
+            }
+
+            this.TotalDays = totalDays;
         }
     }
 }

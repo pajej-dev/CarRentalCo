@@ -1,4 +1,5 @@
 ﻿using CarRentalCo.Administration.Application.RentalCars.Dtos;
+using CarRentalCo.Administration.Application.RentalCars.Extensions;
 using CarRentalCo.Administration.Domain.RentalCars;
 using CarRentalCo.Common.Application.Handlers;
 using System.Threading.Tasks;
@@ -18,29 +19,7 @@ namespace CarRentalCo.Administration.Application.RentalCars.GetRentalCar
         {
             var rentalCar = await rentalCarsRepository.GetByIdAsync(new RentalCarId(query.RentalCarId));
 
-            //todo refactor to automamapper
-            return rentalCar == default ? null :
-                new RentalCarDto
-                {
-                    Id = rentalCar.Id.Value,
-                    Description = rentalCar.Description,
-                    ImageUrl = rentalCar.ImageUrl,
-                    PricePerDay = rentalCar.PricePerDay,
-                    VinNumber = rentalCar.VinNumber,
-                    OperatingInfo = new RentalCarOperatingInfoDto
-                    {
-                        InsurrenceValidThru = rentalCar.OperatingInfo.InsurrenceValidThru,
-                        OilValidThru = rentalCar.OperatingInfo.OilValidThru,
-                        TechnicalReviewValidThru = rentalCar.OperatingInfo.TechnicalReviewValidThru
-                    },
-                    Specification = new RentalCarSpecificationDto
-                    {
-                        Brand = rentalCar.Specification.Brand,
-                        Colour = (ColourDto)rentalCar.Specification.Colour,
-                        Model = rentalCar.Specification.Model,
-                        ProductionDate = rentalCar.Specification.ProductionDate
-                    }
-                };
+            return rentalCar == default ? null : rentalCar.AsDto();
         }
     }
 }

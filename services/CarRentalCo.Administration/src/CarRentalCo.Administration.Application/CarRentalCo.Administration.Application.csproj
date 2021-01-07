@@ -5,16 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <Compile Remove="Owners\Dtos\**" />
+    <EmbeddedResource Remove="Owners\Dtos\**" />
+    <None Remove="Owners\Dtos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CarRentalCo.Common" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CarRentalCo.Administration.Domain\CarRentalCo.Administration.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Owners\Dtos\" />
   </ItemGroup>
 
 </Project>

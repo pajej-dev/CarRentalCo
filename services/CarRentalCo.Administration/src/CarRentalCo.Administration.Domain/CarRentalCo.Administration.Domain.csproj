@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CarRentalCo.Common" Version="1.0.1" />
+    <Compile Remove="RentalCars\Exceptions\**" />
+    <EmbeddedResource Remove="RentalCars\Exceptions\**" />
+    <None Remove="RentalCars\Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RentalCars\Exceptions\" />
+    <PackageReference Include="CarRentalCo.Common" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

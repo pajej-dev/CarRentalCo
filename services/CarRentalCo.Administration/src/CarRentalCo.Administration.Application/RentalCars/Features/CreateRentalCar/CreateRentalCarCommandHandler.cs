@@ -16,10 +16,10 @@ namespace CarRentalCo.Administration.Application.RentalCars.Features.CreateRenta
 
         public async Task HandleAsync(CreateRentalCarCommand command, Guid correlationId = default)
         {
-            var specification = new RentalCarSpecification(command.Specification.Brand, command.Specification.Model,
+            var specification = RentalCarSpecification.Create(command.Specification.Brand, command.Specification.Model,
                 command.Specification.ProductionDate, (Colour)command.Specification.Colour);
 
-            var operatingInfo = new RentalCarOperatingInfo(command.OperatingInfo.TechnicalReviewValidThru,
+            var operatingInfo = RentalCarOperatingInfo.Create(command.OperatingInfo.TechnicalReviewValidThru,
                 command.OperatingInfo.InsurrenceValidThru, command.OperatingInfo.OilValidThru);
 
             var rentalCar = RentalCar.Create(command.Id, specification, operatingInfo, command.VinNumber, command.Description,

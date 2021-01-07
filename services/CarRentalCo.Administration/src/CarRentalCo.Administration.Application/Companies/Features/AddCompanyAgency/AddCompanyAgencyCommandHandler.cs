@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using CarRentalCo.Administration.Application.Companies.Extensions;
 using CarRentalCo.Administration.Domain.Companies;
 using CarRentalCo.Common.Application.Handlers;
 using System;
@@ -9,12 +9,10 @@ namespace CarRentalCo.Administration.Application.Companies.Features.AddCompanyAg
     public class AddCompanyAgencyCommandHandler : ICommandHandler<AddCompanyAgencyCommand>
     {
         private readonly ICompanyRepository companyRepository;
-        private readonly IMapper mapper;
 
-        public AddCompanyAgencyCommandHandler(ICompanyRepository companyRepository, IMapper mapper)
+        public AddCompanyAgencyCommandHandler(ICompanyRepository companyRepository)
         {
             this.companyRepository = companyRepository;
-            this.mapper = mapper;
         }
 
         public async Task HandleAsync(AddCompanyAgencyCommand command, Guid correlationId = default)
@@ -27,7 +25,7 @@ namespace CarRentalCo.Administration.Application.Companies.Features.AddCompanyAg
 
             var company = await companyRepository.GetByIdAsync(command.CompanyId);
 
-            var agencyAdress = mapper.Map<AgencyAdress>(command.Adress);
+            var agencyAdress = command.Adress.AsValueObject();
             company.AddCompanyAgency(command.AgencyId, agencyAdress);
             await companyRepository.UpdateAsync(company);
         }

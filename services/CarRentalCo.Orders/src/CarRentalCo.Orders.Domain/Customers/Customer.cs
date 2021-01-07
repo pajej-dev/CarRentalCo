@@ -14,7 +14,7 @@ namespace CarRentalCo.Orders.Domain.Customers
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
 
-        public  Customer(CustomerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
+        public Customer(CustomerId id, string fullName, string email, DateTime dateOfBirth, DateTime creationDate)
         {
             this.Id = id;
             this.FullName = fullName;

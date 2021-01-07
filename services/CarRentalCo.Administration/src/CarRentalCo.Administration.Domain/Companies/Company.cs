@@ -84,6 +84,5 @@ namespace CarRentalCo.Administration.Domain.Companies
             agency.AddRentalCar(rentalCarId);
             AddDomainEvent(new AgencyRentalCarAddedDomainEvent(agencyId, Id, rentalCarId));
         }
-
     }
 }
