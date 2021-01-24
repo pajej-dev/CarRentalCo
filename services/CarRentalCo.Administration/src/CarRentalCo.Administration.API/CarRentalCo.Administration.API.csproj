@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CarRentalCo.Common\src\CarRentalCo.Common\CarRentalCo.Common.csproj" />
     <ProjectReference Include="..\CarRentalCo.Administration.Application\CarRentalCo.Administration.Application.csproj" />
     <ProjectReference Include="..\CarRentalCo.Administration.Infrastructure\CarRentalCo.Administration.Infrastructure.csproj" />
   </ItemGroup>

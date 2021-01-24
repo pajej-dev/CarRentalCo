@@ -39,7 +39,7 @@ namespace CarRentalCo.Administration.Domain.Companies
         public void AddCompanyAgency(AgencyId agencyId, AgencyAdress adress)
         {
             if (Agencies.Count == 10)
-                throw new AddCompanyAgencyRejectedException("Company cannot contains more than 10 Agencies");
+                throw new CompanyAgencyAmountExceededException("Company cannot contains more than 10 Agencies");
 
             AgencyRole role;
 
@@ -48,7 +48,7 @@ namespace CarRentalCo.Administration.Domain.Companies
             else
                 role = AgencyRole.Standard;
 
-            Agencies.Add(Agency.Create(agencyId,adress, role));
+            Agencies.Add(Agency.Create(agencyId, adress, role));
             AddDomainEvent(new AgencyAddedDomainEvent(agencyId, Id));
         }
 
@@ -60,17 +60,19 @@ namespace CarRentalCo.Administration.Domain.Companies
         public void ChangeCompanyHeadquarter(AgencyId newHeadquarterId)
         {
             if (Agencies.Count == 0)
-                throw new ChangeCompanyHeadquarterRejectedException("Company headquarter cannot be changed. Company does not contain any agency");
+                throw new CompanyAgencyNotFoundException("Company headquarter cannot be changed. Company does not contain any agency");
+
+            var newHQ = Agencies.FirstOrDefault(x => x.Id == newHeadquarterId);
+            if (newHQ == null)
+                throw new NewHeadquarterNotExistsInCompanyException($"Company headquarter cannot be changed. " +
+                    $"Provided '{nameof(AgencyId)}': {newHeadquarterId} not exists in a company");
 
             var currentHQ = Agencies.First(x => x.Role == AgencyRole.Headquarter);
             currentHQ.ChangeRoleToStandard();
 
-            var newHQ = Agencies.FirstOrDefault(x => x.Id == newHeadquarterId);
-            if (newHQ == null)
-                throw new ChangeCompanyHeadquarterRejectedException($"Company headquarter cannot be changed. " +
-                    $"Provided '{nameof(AgencyId)}': {newHeadquarterId} not exists in a company");
-
             newHQ.ChangeRoleToHeadquarter();
+
+            AddDomainEvent(new CompanyHeadquarterChangedEvent(currentHQ.Id, newHeadquarterId, Id));
         }
 
         public void AddAgencyRentalCar(AgencyId agencyId, RentalCarId rentalCarId)
@@ -78,7 +80,7 @@ namespace CarRentalCo.Administration.Domain.Companies
             var agency = Agencies.FirstOrDefault(x => x.Id == agencyId);
 
             if (agency == null)
-                throw new AgencyNotFoundException($"Unable to add rental car. AgencyId: {agencyId} does not exists" +
+                throw new CompanyAgencyNotFoundException($"Unable to add rental car. Company agency: {agencyId} does not exists" +
                     $"in a company with Id: {Id}");
 
             agency.AddRentalCar(rentalCarId);

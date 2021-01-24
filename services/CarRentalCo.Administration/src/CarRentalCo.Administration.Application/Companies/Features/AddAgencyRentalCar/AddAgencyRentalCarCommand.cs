@@ -16,6 +16,5 @@ namespace CarRentalCo.Administration.Application.Companies.Features.AddAgencyRen
             AgencyId = agencyId;
             RentalCarId = rentalCarId;
         }
-
     }
 }

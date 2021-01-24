@@ -19,7 +19,7 @@ namespace CarRentalCo.Administration.Domain.Companies
 
         //todo employers
 
-        public  Agency(AgencyId agencyId, AgencyAdress adress, AgencyRole agencyRole, DateTime roleAssignDate, DateTime setUpDate, IList<RentalCarId> rentalCars = null)
+        public Agency(AgencyId agencyId, AgencyAdress adress, AgencyRole agencyRole, DateTime roleAssignDate, DateTime setUpDate, IList<RentalCarId> rentalCars = null)
         {
             Id = agencyId;
             Adress = adress;

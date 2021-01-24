@@ -21,7 +21,5 @@ namespace CarRentalCo.Common.Domain
         {
             domainEvents?.Clear();
         }
-
     }
-
 }
